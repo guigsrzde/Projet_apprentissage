@@ -1,7 +1,7 @@
 from affichage_principal import *
 from virus import *
 
-print("Hello")
+print("Hello!")
 affiche()
 virus()
 
