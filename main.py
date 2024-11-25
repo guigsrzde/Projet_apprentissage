@@ -1,4 +1,6 @@
 import affichage_principal
-import virus
+from virus import *
 
 print("Hello")
+affiche()
+virus()
