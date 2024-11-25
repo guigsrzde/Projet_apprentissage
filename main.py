@@ -1,4 +1,4 @@
-import affichage_principal
+from affichage_principal import *
 from virus import *
 
 print("Hello")
