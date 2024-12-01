@@ -1,7 +1,7 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout, QLabel
+from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
+
 
 class Menu(QWidget):
     def __init__(self):
@@ -11,7 +11,7 @@ class Menu(QWidget):
 
     def _add_button(self, text, row, col, cb):
         button = QPushButton(text)
-        button.setSizePolicy(button.sizePolicy().Expanding, button.sizePolicy().Expanding)  # Make buttons resizable
+        button.setSizePolicy(button.sizePolicy().Expanding, button.sizePolicy().Expanding) # Make buttons resizable
         self._grid.addWidget(button, row, col)  # Add the button to the grid
         button.clicked.connect(cb)
 
@@ -48,7 +48,7 @@ class Menu(QWidget):
 
     def _click_symptome(self):
         print("Click de symptome")
-    
+
     def resizeEvent(self, event):
         """
         This method will be called whenever the window is resized.
@@ -75,8 +75,6 @@ class Menu(QWidget):
 
         # Optionally call the base class's resizeEvent to ensure the layout behaves properly
         super().resizeEvent(event)
-
-
 
 
 def affiche():
