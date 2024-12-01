@@ -1,42 +1,35 @@
 import sys
-import PyQt5.QtWidgets as widgets
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout
 
-class Menu(widgets.Qwidget):
+class Menu(QWidget):
     def __init__(self):
-        super.__init__(None)
+        super().__init__()  # Correct usage of super().__init__()
         self._build_ui()
-        self.resize(256,256)
-        #self._maladie = v
+        self.resize(256, 256)
 
     def _add_button(self, text, row, col, cb):
-        button = widgets.QPushButton(text)
-        self._grid.addWidget(button, row, col)
+        button = QPushButton(text)
+        self._grid.addWidget(button, row, col)  # Add the button to the grid
         button.clicked.connect(cb)
 
     def _build_ui(self):
         self.setWindowTitle("Serious Game: Réussiras-tu à faire disparaître l'humanité")
-        self._grid = widgets.QGridLayout()
-        self._grid.setSpacing(1)
-        self._add_button("propagation",0,3,self._click_propagation)
-        self._add_button("resistance",1,3,self._click_resistance)
-        self._add_button("symptome",2,3,self._click_symptome)
+        self._grid = QGridLayout()  # Create a QGridLayout
+        self.setLayout(self._grid)  # Set the QGridLayout as the main layout of the window
+
+        # Add buttons on the right side (column 3)
+        self._add_button("Propagation", 0, 3, self._click_propagation)
+        self._add_button("Resistance", 1, 3, self._click_resistance)
+        self._add_button("Symptome", 2, 3, self._click_symptome)
 
     def _click_propagation(self):
-        #self._maladie.propagation += 1
-        print("click de propagation")
+        print("Click de propagation")
 
     def _click_resistance(self):
-        #self._maladie.resistance += 1
-        print("click de resistance")
+        print("Click de resistance")
 
     def _click_symptome(self):
-        #self._maladie.symptome += 1
-        print("click de symptome")
-
-
-
-
-
+        print("Click de symptome")
 
 
 
