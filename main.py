@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QApplication
 print(sys.version)
 
 print("Hello!")
-virus.affiche()
-virus()
+affichage_principal.affiche()
+virus.virus()
 
 app = QApplication(sys.argv)
 jeu = affichage_principal.Menu()

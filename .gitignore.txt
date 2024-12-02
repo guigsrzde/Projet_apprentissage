@@ -1,0 +1,11 @@
+# Virtual environment
+.venv/
+env/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Git metadata
+.git/
