@@ -1,14 +1,19 @@
-from affichage_principal import *
-from virus import *
+import affichage_principal
+import virus
+import sys
+from PyQt5.QtWidgets import QApplication
+
+print(sys.version)
 
 print("Hello!")
-affiche()
-virus()
+affichage_principal.affiche()
+virus.virus()
 
-app = widgets.QApplication(sys.argv)
-jeu = Menu()
+app = QApplication(sys.argv)
+jeu = affichage_principal.Menu()
 jeu.show()
 sys.exit(app.exec_())
+
 
 
 
