@@ -4,8 +4,9 @@ from PyQt5.QtCore import Qt
 
 
 class Menu(QWidget):
-    def __init__(self):
-        super().__init__()  # Correct usage of super().__init__()
+    def __init__(self, map_choice):
+        self._game_map = map_choice
+        super().__init__()
         self._build_ui()
         self.resize(500, 256)
 
@@ -22,7 +23,7 @@ class Menu(QWidget):
         self.image_label = QLabel(self)
 
         # Load an image using QPixmap
-        self.pixmap = QPixmap("map.png")  # Replace with your image path
+        self.pixmap = QPixmap(str(self._game_map) + "\map.png")  # Replace with your image path
 
         # Set the image to the QLabel
         self.image_label.setPixmap(self.pixmap)
@@ -75,8 +76,3 @@ class Menu(QWidget):
 
         # Optionally call the base class's resizeEvent to ensure the layout behaves properly
         super().resizeEvent(event)
-
-
-def affiche():
-    print("ok affichage")
-    return 0

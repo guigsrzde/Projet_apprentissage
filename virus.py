@@ -1,8 +1,3 @@
-def virus():
-    print("ok virus")
-    return 0
-
-
 class Virus:
     def __init__(self, nom, propagation=1, resistance=1, points_mutation=10):
         self.nom = nom
