@@ -55,10 +55,10 @@ class Menu(QWidget):
         self._add_button("Propagation", 3, len(self._cities), self._click_propagation, self._virus)
 
         #self.resize_image_to_window(self.width(), self.height())
-        
 
+        
         for i in range(len(self._cities)):
-            self._add_button(self._cities[i].name, 4,i,self._click_ville, self._cities[i])
+            self._add_button(self._cities[i].name, 4, i,self._click_ville, self._cities[i])
         
         #self._grid.setColumnStretch(0, 2)  # Column 0 (image) gets 2x more space
         #self._grid.setColumnStretch(1, 1)  # Column 1 (buttons) gets 1x space
