@@ -1,5 +1,4 @@
 import affichage_principal
-import virus
 import sys
 from PyQt5.QtWidgets import QApplication
 

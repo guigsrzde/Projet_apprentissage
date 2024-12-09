@@ -1,7 +1,7 @@
 class Virus:
     def __init__(self, nom, propagation=1, resistance=1, points_mutation=10):
         self.nom = nom
-        self.symptomes = []  # Liste des symptômes actifs
+        self.symptomes = 1  # Liste des symptômes actifs
         self.propagation = propagation  # Propagation de base
         self.resistance = resistance  # Résistance de base
         self.points_mutation = points_mutation  # Points pour évoluer
@@ -46,7 +46,7 @@ class Symptom:
     def afficher_details(self):
         print(f"{self.nom} - Gravité: {self.gravite}, Coût: {self.cout_mutation}, Propagation: {self.impact_propagation}, Mortalité: {self.impact_mortalite}")
 
-
+"""
 toux = Symptom("Toux", gravite=2, cout_mutation=3, impact_propagation=1, impact_mortalite=0)
 fievre = Symptom("Fièvre", gravite=3, cout_mutation=5, impact_propagation=2, impact_mortalite=1)
 mort = Symptom("Mort", gravite=10, cout_mutation=8, impact_propagation=0, impact_mortalite=5)
@@ -65,3 +65,4 @@ virus.ajouter_symptome(mort)  # Peut échouer si les points sont insuffisants
 # Afficher les symptômes et stats après les évolutions
 virus.afficher_symptomes()
 virus.afficher_stats()
+"""
