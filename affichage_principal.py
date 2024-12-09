@@ -16,7 +16,7 @@ class Menu(QWidget):
         self._ymin = 0
         super().__init__()
         self._build_ui()
-        self.resize(500, 256)
+        #self.resize(500, 256)
 
     def _add_button(self, text, row, col, cb, object = None):
         button = QPushButton(text)
@@ -26,6 +26,7 @@ class Menu(QWidget):
         button.clicked.connect(lambda: cb(button.customValue))
 
     def _build_ui(self):
+        n_cities = len(self._cities)
         self.setWindowTitle("Serious Game: Réussiras-tu à faire disparaître l'humanité")
         self._grid = QGridLayout()  # Create a QGridLayout
         self.setLayout(self._grid)  # Set the QGridLayout as the main layout of the window
@@ -46,19 +47,20 @@ class Menu(QWidget):
 
         # Add the QLabel to the grid layout (position 0, 0)
         
-        self._grid.addWidget(self.image_label, 0, 0, 4, len(self._cities))
+        self._grid.addWidget(self.image_label, 0, 0, n_cities, 3)
 
-        # Add buttons on the right side (column 3)
-        self._add_button("Infos Virus", 0, len(self._cities), self._click_virus, self._virus)
-        self._add_button("Resistance", 1, len(self._cities), self._click_resistance, self._virus)
-        self._add_button("Symptome", 2, len(self._cities), self._click_symptome, self._virus)
-        self._add_button("Propagation", 3, len(self._cities), self._click_propagation, self._virus)
+        # Add buttons on the bottom
+        self._add_button("Resistance", n_cities, 0, self._click_resistance, self._virus)
+        self._add_button("Symptome", n_cities, 1, self._click_symptome, self._virus)
+        self._add_button("Propagation", n_cities, 2, self._click_propagation, self._virus)
 
         #self.resize_image_to_window(self.width(), self.height())
 
         
-        for i in range(len(self._cities)):
-            self._add_button(self._cities[i].name, 4, i,self._click_ville, self._cities[i])
+        for i in range(n_cities):
+            self._add_button(self._cities[i].name, i, 4,self._click_ville, self._cities[i])
+        
+        self._add_button("Continue Game", n_cities, 4, self._click_time, self._virus)
         
         #self._grid.setColumnStretch(0, 2)  # Column 0 (image) gets 2x more space
         #self._grid.setColumnStretch(1, 1)  # Column 1 (buttons) gets 1x space
@@ -77,6 +79,10 @@ class Menu(QWidget):
 
     def _click_ville(self, value):
         print(value.name)
+    
+    def _click_time(self, value):
+        print("time clicked")
+
 
     def resizeEvent(self, event):
         """
