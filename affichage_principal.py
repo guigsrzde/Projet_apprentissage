@@ -11,7 +11,6 @@ class Menu(QWidget):
         Constructor that instantly launches the game when called
         """
         self._cities = parser.get_list_from_file(filename + "/cities.py", "list_cities")
-        print(self._cities[0].name)
         self._game_map = filename
         self._virus = virus.Virus("SuperVirus")
         self._resize = 0
@@ -43,15 +42,24 @@ class Menu(QWidget):
         # Add the QLabel to the grid layout (position 0, 0)
         self._grid.addWidget(self.image_label, 0, 0, n_cities, 3)
 
-    def _add_button(self, text, row, col, cb, object = None):
+    def _add_button(self, text, row, col, cb):
         """
         Function that creates a text box in (row, col) of the QGridLayout()
         """
         button = QPushButton(text)
         button.setSizePolicy(button.sizePolicy().Expanding, button.sizePolicy().Expanding) # Make buttons resizable
         self._grid.addWidget(button, row, col)  # Add the button to the grid
-        button.customValue = object
-        button.clicked.connect(lambda: cb(button.customValue))
+        button.clicked.connect(cb)
+    
+    def _add_button_city(self, text, row, col, cb, index=0):
+        """
+        Function that creates a text box in (row, col) of the QGridLayout()
+        """
+        button = QPushButton(text)
+        button.setSizePolicy(button.sizePolicy().Expanding, button.sizePolicy().Expanding) # Make buttons resizable
+        self._grid.addWidget(button, row, col)  # Add the button to the grid
+        button.customValue = index
+        button.clicked.connect(lambda _, obj=button.customValue: cb(obj))
     
     def _add_all_buttons(self):
         """
@@ -61,23 +69,24 @@ class Menu(QWidget):
         n_cities = len(self._cities)
 
         # Add buttons on the bottom
-        self._add_button("Propagation", n_cities, 0, self._click_propagation, self._virus)
-        self._add_button("Resistance", n_cities, 1, self._click_resistance, self._virus)
-        self._add_button("Symptome", n_cities, 2, self._click_symptome, self._virus)
+        self._add_button("Propagation", n_cities, 0, self._click_propagation)
+        self._add_button("Resistance", n_cities, 1, self._click_resistance)
+        self._add_button("Symptome", n_cities, 2, self._click_symptome)
 
         # Add buttons on the right side
         for i in range(n_cities):
-            self._add_button(self._cities[i].name, i, 4,self._click_ville, self._cities[i])
+            self._add_button_city(self._cities[i].name, i, 4, self._click_ville, i)
         
-        self._add_button("Continue Game", n_cities, 4, self._click_time, self._virus)
+        self._add_button("Continue Game", n_cities, 4, self._click_time)
     
-    def _create_info_boxes(self, ville):
+    def _create_info_boxes(self):
         """
         Create and display the info box with labels for game details.
         Stores references to the labels in a dictionary for later updates.
         """
         self._info_labels = {}  # Dictionary to store references to labels
         layout = QVBoxLayout()
+        ville = self._cities[0]
 
         # Create labels and store them in the dictionary
         self._info_labels['upgrade_points'] = QLabel(f"Points available to upgrade virus: {self._virus.points_mutation}")
@@ -102,6 +111,12 @@ class Menu(QWidget):
         # Add the container to the grid
         self._grid.addWidget(container, 0, 5, len(self._cities) + 1, 1)
 
+    def _other_messages_box(self):
+        self._error_label = QLabel("No error message to display")
+        self._grid.addWidget(self._error_label, len(self._cities)+2, 0, 1, 5)
+        self._unexpected_event_label = QLabel("You will be warned of unexpected events here")
+        self._grid.addWidget(self._unexpected_event_label, len(self._cities)+3, 0, 1, 5)
+
     def _build_ui(self):
         """
         Creates the Game UI: showing the game map and creating buttons to play the game,
@@ -116,57 +131,61 @@ class Menu(QWidget):
         # Add all elements needed to the gridlayout
         self._add_pixmap()
         self._add_all_buttons()
-        self._create_info_boxes(self._cities[0])
+        self._create_info_boxes()
+        self._other_messages_box()
 
-    def _click_propagation(self, value):
-        if (value.points_mutation > 0):
-            value.propagation += 1
-            value.points_mutation -= 1
+    def _click_propagation(self):
+        if (self._virus.points_mutation > 0):
+            self._virus.propagation += 1
+            self._virus.points_mutation -= 1
             if hasattr(self, '_info_labels'):
                 self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation}")
                 self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.points_mutation}")
             else:
                 print("Info labels are not initialized!")
         else:
-            print("not enough points to upgrade")
+            self._error_label.setText("Not enough points available to upgrade the propagation on the virus")
 
-    def _click_resistance(self, value):
-        if (value.points_mutation > 0):
-            value.resistance += 1
-            value.points_mutation -= 1
+    def _click_resistance(self):
+        
+        if (self._virus.points_mutation > 0):
+            self._virus.resistance += 1
+            self._virus.points_mutation -= 1
             if hasattr(self, '_info_labels'):
                 self._info_labels['virus_resistance'].setText(f"Virus Resistance factor: {self._virus.resistance}")
                 self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.points_mutation}")
             else:
                 print("Info labels are not initialized!")
         else:
-            print("not enough points to upgrade")
+            self._error_label.setText("Not enough points available to upgrade the resistance on the virus")
 
-    def _click_symptome(self, value):
-        if (value.points_mutation > 0):
-            value.symptomes += 1
-            value.points_mutation -= 1
+    def _click_symptome(self):
+        if (self._virus.points_mutation > 0):
+            self._virus.symptomes += 1
+            self._virus.points_mutation -= 1
             if hasattr(self, '_info_labels'):
                 self._info_labels['virus_symptoms'].setText(f"Virus Symptom factor: {self._virus.symptomes}")
                 self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.points_mutation}")
             else:
                 print("Info labels are not initialized!")
         else:
-            print("not enough points to upgrade")
+            self._error_label.setText("Not enough points available to upgrade the symptoms on the virus")
 
-    def _click_ville(self, value):
+    def _click_ville(self, index):
         """
         Update the info box when a new city is selected.
         """
+        ville = self._cities[index]
+        print(index)
         if hasattr(self, '_info_labels'):
-            self._info_labels['selected_city'].setText(f"Selected city : {value.name}")
-            self._info_labels['city_population'].setText(f"Initial Population : {value.pop}")
-            self._info_labels['city_infected'].setText(f"Infected : {value.infected}")
-            self._info_labels['city_dead'].setText(f"Dead : {value.mort}")
+            self._info_labels['selected_city'].setText(f"Selected city : {ville.name}")
+            self._info_labels['city_population'].setText(f"Initial Population : {ville.pop}")
+            self._info_labels['city_infected'].setText(f"Infected : {ville.infected}")
+            self._info_labels['city_dead'].setText(f"Dead : {ville.mort}")
         else:
             print("Info labels are not initialized!")
     
-    def _click_time(self, value):
+    def _click_time(self):
         """
         Increment the turn number and update the corresponding label.
         """
