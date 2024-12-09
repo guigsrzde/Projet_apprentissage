@@ -22,7 +22,7 @@ fievre = Symptom("Fièvre", gravite=3, cout_mutation=5, impact_propagation=2, im
 mort = Symptom("Mort", gravite=10, cout_mutation=8, impact_propagation=0, impact_mortalite=5)
 
 # Créer un virus
-virus = Virus("SuperVirus", propagation=1, resistance=1, points_mutation=10)
+virus = virus.Virus("SuperVirus", propagation=1, resistance=1, points_mutation=10)
 
 # Afficher les stats initiales
 virus.afficher_stats()
