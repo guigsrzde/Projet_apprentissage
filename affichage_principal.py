@@ -176,7 +176,6 @@ class Menu(QWidget):
         Update the info box when a new city is selected.
         """
         ville = self._cities[index]
-        print(index)
         if hasattr(self, '_info_labels'):
             self._info_labels['selected_city'].setText(f"Selected city : {ville.name}")
             self._info_labels['city_population'].setText(f"Initial Population : {ville.pop}")
