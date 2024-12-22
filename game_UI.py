@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel, QVBoxLayo
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import parser
+import city
 import virus
-
 
 class Menu(QWidget):
     def __init__(self, filename):
@@ -24,7 +24,8 @@ class Menu(QWidget):
         """
         Adds the map to the QGridLayout. Called in _build_ui().
         """
-        n_cities = len(self._cities)
+        n_row = len(self._cities)
+        n_col = len(self._virus.symptoms) + 3
 
         # Load an image using QPixmap
         self.pixmap = QPixmap(str(self._game_map) + "/map.png")  # Replace with your image path
@@ -39,7 +40,7 @@ class Menu(QWidget):
         self.image_label.setScaledContents(True)
 
         # Add the QLabel to the grid layout
-        self._grid.addWidget(self.image_label, 0, 0, n_cities, 3)
+        self._grid.addWidget(self.image_label, 0, 0, n_row, n_col)
 
     def _add_button(self, text, row, col, cb):
         """
@@ -50,7 +51,7 @@ class Menu(QWidget):
         self._grid.addWidget(button, row, col)
         button.clicked.connect(cb)
 
-    def _add_button_city(self, text, row, col, cb, index=0):
+    def _add_button_value(self, text, row, col, cb, index=0):
         """
         Creates a button for a specific city at (row, col) in the QGridLayout().
         """
@@ -64,18 +65,20 @@ class Menu(QWidget):
         """
         Creates all buttons needed for the game. Called in _build_ui().
         """
-        n_cities = len(self._cities)
+        n_row = len(self._cities)
+        n_col = len(self._virus.symptoms) + 3
 
         # Add buttons at the bottom
-        self._add_button("Propagation", n_cities, 0, self._click_propagation)
-        self._add_button("Resistance", n_cities, 1, self._click_resistance)
-        self._add_button("Symptom", n_cities, 2, self._click_symptom)
+        self._add_button("Propagation", n_row, 0, self._click_propagation)
+        self._add_button("Resistance", n_row, 1, self._click_resistance)
+        for i in range(len(self._virus.symptoms)):
+            self._add_button_value(f"Symptom: {self._virus.symptoms[i].name}", n_row, 2 + i, self._click_symptom, i)
 
         # Add buttons for each city on the right
-        for i in range(n_cities):
-            self._add_button_city(self._cities[i].name, i, 4, self._click_city, i)
+        for i in range(n_row):
+            self._add_button_value(self._cities[i].name, i, n_col, self._click_city, i)
 
-        self._add_button("Continue Game", n_cities, 4, self._click_time)
+        self._add_button("Continue Game", n_row, n_col, self._click_time)
 
     def _create_info_boxes(self):
         """
@@ -91,7 +94,9 @@ class Menu(QWidget):
         self._info_labels['virus_name'] = QLabel(f"Virus name: {self._virus.name}")
         self._info_labels['virus_propagation'] = QLabel(f"Virus Propagation factor: {self._virus.propagation}")
         self._info_labels['virus_resistance'] = QLabel(f"Virus Resistance factor: {self._virus.resistance}")
-        self._info_labels['virus_symptoms'] = QLabel(f"Virus Symptom factor: {self._virus.symptoms}")
+        for symptom in self._virus.symptoms:
+            name = str(symptom.name)
+            self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {symptom.level}")
         self._info_labels['selected_city'] = QLabel(f"Selected city: {town.name}")
         self._info_labels['city_population'] = QLabel(f"Initial Population: {town.pop}")
         self._info_labels['city_infected'] = QLabel(f"Infected: {town.infected}")
@@ -101,10 +106,13 @@ class Menu(QWidget):
         # Add labels to layout
         for label in self._info_labels.values():
             layout.addWidget(label)
+        
+        n_row = len(self._cities)
+        n_col = len(self._virus.symptoms) + 3
 
         container = QWidget()
         container.setLayout(layout)
-        self._grid.addWidget(container, 0, 5, len(self._cities) + 1, 1)
+        self._grid.addWidget(container, 0, n_col+1, n_row, 1)#, 0, 5, len(self._cities) + 1, 1)
 
     def _other_messages_box(self):
         """
@@ -120,7 +128,6 @@ class Menu(QWidget):
         Creates the Game UI: showing the game map, creating buttons to play, 
         and adding text boxes to display necessary information.
         """
-        n_cities = len(self._cities)
         self.setWindowTitle("Serious Game: Can you end mankind?")
         self._grid = QGridLayout()
         self.setLayout(self._grid)
@@ -150,14 +157,15 @@ class Menu(QWidget):
         else:
             self._error_label.setText("Not enough points available to upgrade the resistance of the virus.")
 
-    def _click_symptom(self):
+    def _click_symptom(self, index):
         if self._virus.mutation_points > 0:
-            self._virus.symptoms += 1
+            symptom = self._virus.symptoms[index]
+            self._virus.symptoms[index].upgrade()
             self._virus.mutation_points -= 1
-            self._info_labels['virus_symptoms'].setText(f"Virus Symptom factor: {self._virus.symptoms}")
+            self._info_labels[f'virus_symptoms_{str(symptom.name)}'].setText(f"Virus Symptom {str(symptom.name)} factor: {symptom.level}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
-            self._error_label.setText("Not enough points available to upgrade the symptoms of the virus.")
+            self._error_label.setText(f"Not enough points available to upgrade the symptom {self._virus.symptoms[index].name} of the virus.")
 
     def _click_city(self, index):
         """
