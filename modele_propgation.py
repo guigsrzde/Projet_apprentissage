@@ -21,7 +21,12 @@ I[0] = 0.01  # Initial proportion of the population infected
 R[0] = 0.0   # Initial proportion of the population recovered
 D[0] = 0.0   # Initial proportion of the population deceased
     
-def SIRD_model(S, I, R, D, beta, gamma, mu, T, dt, virus, n):
+def SIRD_model(S, I, R, D, T, dt, virus, n):
+
+    # Updated parameters
+    beta = 
+    gamma = 
+    mu = 
 
     # Simulation avec la méthode d'Euler
     dS = -beta * S[n-1] * I[n-1] * dt
@@ -38,22 +43,22 @@ def SIRD_model(S, I, R, D, beta, gamma, mu, T, dt, virus, n):
 
 
 
-def plot_SIRD(t, S, I, R, D):
-    """Affiche les résultats du modèle SIRD."""
-    plt.figure(figsize=(10, 6))
-    plt.plot(t, S, label='S (Susceptibles)', color='blue')
-    plt.plot(t, I, label='I (Infectés)', color='red')
-    plt.plot(t, R, label='R (Rétablis)', color='green')
-    plt.plot(t, D, label='D (Décédés)', color='black')
-    plt.xlabel('Temps (jours)')
-    plt.ylabel('Proportion de la population')
-    plt.title('Modèle SIRD - Méthode d\'Euler')
-    plt.legend()
-    plt.grid()
-    plt.show()
+# def plot_SIRD(t, S, I, R, D):
+#     """Affiche les résultats du modèle SIRD."""
+#     plt.figure(figsize=(10, 6))
+#     plt.plot(t, S, label='S (Susceptibles)', color='blue')
+#     plt.plot(t, I, label='I (Infectés)', color='red')
+#     plt.plot(t, R, label='R (Rétablis)', color='green')
+#     plt.plot(t, D, label='D (Décédés)', color='black')
+#     plt.xlabel('Temps (jours)')
+#     plt.ylabel('Proportion de la population')
+#     plt.title('Modèle SIRD - Méthode d\'Euler')
+#     plt.legend()
+#     plt.grid()
+#     plt.show()
 
 # # Exemple d'utilisation
-# if __name__ == "__main__":
+if __name__ == "__main__":
 #     # Paramètres initiaux
 #     S0 = 0.99  # Population initiale susceptible
 #     I0 = 0.01  # Population initiale infectée
@@ -61,9 +66,9 @@ def plot_SIRD(t, S, I, R, D):
 #     D0 = 0.0   # Population initiale décédée
 
 #     # Paramètres du modèle
-#     beta = 0.3    # Taux de transmission
-#     gamma = 0.0   # Taux de récupération
-#     mu = 0.05     # Taux de mortalité
+#     beta = 0.3    # Transmission rate
+#     gamma = 0.0   # Healing rate
+#     mu = 0.05     # Mortality rate
 
 #     # Paramètres temporels
 #     T = 100  # Temps total en jours
@@ -71,7 +76,7 @@ def plot_SIRD(t, S, I, R, D):
 
 #     # Simulation
 #     t, S, I, R, D = SIRD_model(S0, I0, R0, D0, beta, gamma, mu, T, dt)
-
+    print(S[1])
     # Affichage des résultats
     plot_SIRD(t, S, I, R, D)
 

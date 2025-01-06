@@ -4,3 +4,4 @@
 -Affichage du graphique à la fin du jeu + limiter le nombre de tours
 -Intéraction entre les villes
 -Mettre à jour l'affichage: pourcentage + nombre
+-Revoir la mort 
