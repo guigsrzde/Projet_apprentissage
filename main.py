@@ -1,9 +1,9 @@
-import affichage_principal
+import game_UI
 import sys
 from PyQt5.QtWidgets import QApplication
 
 
 app = QApplication(sys.argv)
-jeu = affichage_principal.Menu("royaume_uni")
-jeu.show()
+game = game_UI.Menu("royaume_uni")
+game.show()
 sys.exit(app.exec_())

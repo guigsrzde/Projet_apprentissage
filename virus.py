@@ -1,68 +1,85 @@
+
 class Virus:
-    def __init__(self, nom, propagation=1, resistance=1, points_mutation=10):
-        self.nom = nom
-        self.symptomes = 1  # Liste des symptômes actifs
-        self.propagation = propagation  # Propagation de base
-        self.resistance = resistance  # Résistance de base
-        self.points_mutation = points_mutation  # Points pour évoluer
+    def __init__(self, name, propagation=1, resistance=1, mutation_points=100):
+        self.name = name
+        self.symptoms = []  # List of active symptoms
+        self.propagation = propagation  # base level of propagation
+        self.resistance = resistance  # base level of resistance
+        self.mutation_points = mutation_points # evolution points (game currency)
+        self.mortality = 0.1 # value that determines how harmful the virus is 
+        self.infection_duration = 30 # average number of turns that a person stays infected before dying or recovering
+        self.incidence = 1 # value that determines how fast the virus propagates
+        cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
+        fever = Symptom("Fever", seriousness=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
+        death = Symptom("Death", seriousness=10, mutation_cost=8, propagation_impact=0, mortality_impact=5)
 
-    def ajouter_symptome(self, symptome):
-        if self.points_mutation >= symptome.cout_mutation:
-            self.symptomes.append(symptome)
-            self.propagation += symptome.impact_propagation
-            self.resistance += symptome.impact_mortalite
-            self.points_mutation -= symptome.cout_mutation
-            print(f"{symptome.nom} ajouté ! Propagation : {self.propagation}, Résistance : {self.resistance}. Points restants : {self.points_mutation}")
+        # Add symptoms
+        self.add_symptom(cough)  # Should work
+        self.add_symptom(fever)  # Should work if there are enough points
+        self.add_symptom(death)  # May fail if points are insufficient
+
+    def add_symptom(self, symptom):
+        if self.mutation_points >= symptom.mutation_cost:
+            self.symptoms.append(symptom)
+            self.propagation += symptom.propagation_impact
+            self.mortality += symptom.mortality_impact
+            self.mutation_points -= symptom.mutation_cost
+            print(f"{symptom.name} added ! Propagation level : {self.propagation}, Resistance level : {self.resistance}. Leftover points : {self.mutation_points}")
         else:
-            print(f"Pas assez de points pour ajouter {symptome.nom}.")
+            print(f"Not enough mutation points to add {symptom.name}.")
 
-    def intensifier(self, caracteristique, valeur):
-        if self.points_mutation >= valeur:
-            setattr(self, caracteristique, getattr(self, caracteristique) + valeur)
-            self.points_mutation -= valeur
-            print(f"{caracteristique.capitalize()} augmenté à {getattr(self, caracteristique)}. Points restants : {self.points_mutation}")
+    def intensify(self, caracteristic, value):
+        if self.mutation_points >= value:
+            setattr(self, caracteristic, getattr(self, caracteristic) + value)
+            self.mutation_points -= value
+            print(f"{caracteristic.capitalize()} upgraded to {getattr(self, caracteristic)}. Leftover points : {self.mutation_points}")
         else:
-            print("Pas assez de points de mutation.")
+            print("Not enough mutation points")
 
-    def afficher_symptomes(self):
-        print(f"Symptômes du virus {self.nom}:")
-        for symptome in self.symptomes:
-            symptome.afficher_details()
+    def show_symptoms(self):
+        print(f"Symptoms of the virus {self.name}:")
+        for symptom in self.symptoms:
+            symptom.show_details()
 
-    def afficher_stats(self):
-        print(f"Virus {self.nom}: Propagation={self.propagation}, Résistance={self.resistance}, Points mutation={self.points_mutation}")
+    def show_stats(self):
+        print(f"Virus {self.name}: Propagation={self.propagation}, Resistance={self.resistance}, Mutation points={self.mutation_points}")
 
 
 
 
 class Symptom:
-    def __init__(self, nom, gravite, cout_mutation, impact_propagation, impact_mortalite):
-        self.nom = nom
-        self.gravite = gravite
-        self.cout_mutation = cout_mutation
-        self.impact_propagation = impact_propagation
-        self.impact_mortalite = impact_mortalite
+    def __init__(self, name, seriousness, mutation_cost, propagation_impact, mortality_impact):
+        self.name = name
+        self.seriousness = seriousness
+        self.mutation_cost = mutation_cost
+        self.propagation_impact = propagation_impact
+        self.mortality_impact = mortality_impact
+        self.level = 0
 
-    def afficher_details(self):
-        print(f"{self.nom} - Gravité: {self.gravite}, Coût: {self.cout_mutation}, Propagation: {self.impact_propagation}, Mortalité: {self.impact_mortalite}")
+    def show_details(self):
+        print(f"{self.name} - Seriousness: {self.seriousness}, Cost: {self.mutation_cost}, Propagation: {self.propagation_impact}, Mortality: {self.mortality_impact}")
+    
+    def upgrade(self):
+        #A faire
+        self.level +=1
 
 """
-toux = Symptom("Toux", gravite=2, cout_mutation=3, impact_propagation=1, impact_mortalite=0)
-fievre = Symptom("Fièvre", gravite=3, cout_mutation=5, impact_propagation=2, impact_mortalite=1)
-mort = Symptom("Mort", gravite=10, cout_mutation=8, impact_propagation=0, impact_mortalite=5)
+cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
+fever = Symptom("Fever", seriousness=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
+death = Symptom("Death", seriousness=10, mutation_cost=8, propagation_impact=0, mortality_impact=5)
 
-# Créer un virus
-virus = Virus("SuperVirus", propagation=1, resistance=1, points_mutation=10)
+# Create a virus
+virus = Virus("SuperVirus", propagation=1, resistance=1, mutation_points=10)
 
-# Afficher les stats initiales
-virus.afficher_stats()
+# Display initial stats
+virus.show_stats()
 
-# Ajouter des symptômes
-virus.ajouter_symptome(toux)  # Devrait fonctionner
-virus.ajouter_symptome(fievre)  # Devrait fonctionner si les points suffisent
-virus.ajouter_symptome(mort)  # Peut échouer si les points sont insuffisants
+# Add symptoms
+virus.add_symptom(cough)  # Should work
+virus.add_symptom(fever)  # Should work if there are enough points
+virus.add_symptom(death)  # May fail if points are insufficient
 
-# Afficher les symptômes et stats après les évolutions
-virus.afficher_symptomes()
-virus.afficher_stats()
+# Display symptoms and stats after evolutions
+virus.show_symptoms()
+virus.show_stats()
 """
