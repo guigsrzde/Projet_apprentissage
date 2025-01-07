@@ -99,8 +99,8 @@ class Menu(QWidget):
             self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {symptom.level}")
         self._info_labels['selected_city'] = QLabel(f"Selected city: {town.name}")
         self._info_labels['city_population'] = QLabel(f"Initial Population: {town.pop}")
-        self._info_labels['city_infected'] = QLabel(f"Infected: {town.infected}")
-        self._info_labels['city_dead'] = QLabel(f"Dead: {town.dead}")
+        self._info_labels['city_infected'] = QLabel(f"Infected: {int(town.infected*town.pop+0.1)} people, {int(10000*town.infected)/100}%")
+        self._info_labels['city_dead'] = QLabel(f"Dead: {town.dead*town.pop} people, {int(10000*town.dead)/100}%")
         self._info_labels['turn_number'] = QLabel(f"Turn number: {self._turn}")
 
         # Add labels to layout

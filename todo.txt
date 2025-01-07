@@ -3,4 +3,7 @@
 -Mise en place de la propagation dans le jeu
 -Affichage du graphique à la fin du jeu + limiter le nombre de tours
 -Intéraction entre les villes
+-Débloquer les symptomes
+
+FAIT
 -Mettre à jour l'affichage: pourcentage + nombre
