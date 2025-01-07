@@ -9,23 +9,21 @@ class Virus:
 
         self.resistance = resistance  # base level of resistance
         self.healing_rate = 1/resistance # Decreases when the virus' resistance increases
-
-        self.mortality = 0.1 # value that determines how harmful the virus is 
-
         self.mutation_points = mutation_points # evolution points (game currency)
 
+        self.mortality = 0.1 # value that determines how harmful the virus is 
         self.infection_duration = 30 # average number of turns that a person stays infected before dying or recovering
         self.incidence = 1 # value that determines how fast the virus propagates
-
+        """
         cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
         fever = Symptom("Fever", seriousness=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
         death = Symptom("Death", seriousness=10, mutation_cost=8, propagation_impact=0, mortality_impact=5)
-
+        
         # Add symptoms
         self.add_symptom(cough)  
         self.add_symptom(fever)  
         self.add_symptom(death)  
-
+        """
     def add_symptom(self, symptom):
         if self.mutation_points >= symptom.mutation_cost:
             self.symptoms.append(symptom)

@@ -4,9 +4,10 @@ from PyQt5.QtCore import Qt
 import parser
 import city
 import virus
+from matplotlib import pyplot as plt
 
 class Menu(QWidget):
-    def __init__(self, filename):
+    def __init__(self, filename, maxturns=10):
         """
         Constructor that instantly launches the game when called.
         """
@@ -17,6 +18,7 @@ class Menu(QWidget):
         self._xmin = 0
         self._ymin = 0
         self._turn = 0
+        self._maxturns = maxturns
         super().__init__()
         self._build_ui()
 
@@ -99,10 +101,12 @@ class Menu(QWidget):
             self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {symptom.level}")
         self._info_labels['selected_city'] = QLabel(f"Selected city: {town.name}")
         self._info_labels['city_population'] = QLabel(f"Initial Population: {town.pop}")
-        self._info_labels['city_infected'] = QLabel(f"Infected: {int(town.infected*town.pop+0.1)} people, {int(10000*town.infected)/100}%")
-        self._info_labels['city_dead'] = QLabel(f"Dead: {town.dead*town.pop} people, {int(10000*town.dead)/100}%")
+        self._info_labels['city_infected'] = QLabel(f"Infected: {int(town.infected[-1]*town.pop+0.1)} people, {int(10000*town.infected[-1])/100}%")
+        self._info_labels['city_dead'] = QLabel(f"Dead: {int(town.dead[-1]*town.pop+0.1)} people, {int(10000*town.dead[-1])/100}%")
+        self._info_labels['city_healthy'] = QLabel(f"Healthy: {int(town.healthy[-1]*town.pop+0.1)} people, {int(10000*town.healthy[-1])/100}%")
+        self._info_labels['city_recovered'] = QLabel(f"Recovered: {int(town.recovered[-1]*town.pop+0.1)} people, {int(10000*town.recovered[-1])/100}%")
         self._info_labels['turn_number'] = QLabel(f"Turn number: {self._turn}")
-
+        
         # Add labels to layout
         for label in self._info_labels.values():
             layout.addWidget(label)
@@ -174,15 +178,37 @@ class Menu(QWidget):
         city = self._cities[index]
         self._info_labels['selected_city'].setText(f"Selected city: {city.name}")
         self._info_labels['city_population'].setText(f"Initial Population: {city.pop}")
-        self._info_labels['city_infected'].setText(f"Infected: {city.infected}")
-        self._info_labels['city_dead'].setText(f"Dead: {city.dead}")
+        self._info_labels['city_infected'].setText(f"Infected: {int(city.infected[-1]*city.pop+0.1)} people, {int(10000*city.infected[-1])/100}%")
+        self._info_labels['city_dead'].setText(f"Dead: {city.dead[-1]*city.pop} people, {int(10000*city.dead[-1])/100}%")
+        self._info_labels['city_healthy'].setText(f"Healthy: {int(city.healthy[-1]*city.pop+0.1)} people, {int(10000*city.healthy[-1])/100}%")
+        self._info_labels['city_recovered'].setText(f"Recovered: {int(city.recovered[-1]*city.pop+0.1)} people, {int(10000*city.recovered[-1])/100}%")
 
     def _click_time(self):
         """
         Increments the turn number and updates the corresponding label.
         """
         self._turn += 1
-        self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
+        if self._turn == self._maxturns:
+            self._error_label.setText("This is your last turn!")
+        elif self._turn > self._maxturns:
+            self.close()
+            n = len(self._cities)
+            n = int(n**(1/2))
+            fig, ax = plt.subplots(n, n, figsize = (30,20))
+            fig.suptitle("Global Evolution of your virus", fontsize = 28)
+            for k in range(len(self._cities)):
+                town = self._cities[k]
+                row,col=k//n,k%n
+                ax[row][col].plot(town.healthy,label = 'healthy')
+                ax[row][col].plot(town.infected, label = 'infected')
+                ax[row][col].plot(town.recovered, label = 'recovered')
+                ax[row][col].plot(town.dead, label = 'dead')
+                ax[row][col].set_title(town.name)
+                ax[row][col].grid()
+            plt.show()
+        else:
+            self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
+        
 
     def resizeEvent(self, event):
         """
