@@ -22,9 +22,15 @@ class City:
         # self.dead = np.zeros(N)
         # self.dead[0] = 0
         # self.recovered = np.zeros(N)
-        # self.recovered[0] = 0
-        self.healthy = [1 - 1/population]
-        self.infected = [1 - self.healthy[0]]
+        # self.recovered[0] = 0  
+        self.infected = [1]
+        self.healthy = [self.pop-self.infected[0]]
+        # if infected : 
+        #     self.infected = [1]
+        # else :
+        #     self.infected = [0]
+        self.dead = [0]
+        self.recovered = [0]
 
         self.x = coord_x
         self.y = coord_y
