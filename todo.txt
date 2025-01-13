@@ -1,7 +1,10 @@
 -Restructurer la classe virus+symptômes
 -Fonction qui donne les paramètres en fonction des caractéristiques du virus
 -Mise en place de la propagation dans le jeu
--Affichage du graphique à la fin du jeu + limiter le nombre de tours
--Intéraction entre les villes
+-Débloquer les symptomes
+
+FAIT
 -Mettre à jour l'affichage: pourcentage + nombre
 -Revoir la mort 
+-Intéraction entre les villes
+-Affichage du graphique à la fin du jeu + limiter le nombre de tours
