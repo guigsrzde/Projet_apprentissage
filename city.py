@@ -15,18 +15,22 @@ class City:
         Initialises a city and fills its parameters.
         """
         self.pop = population
-        self.healthy = np.zeros(N)
-        self.healthy[0] = 1 - 1/population # number between 0 and 1 that gives the proportion of healthy ppl
-        self.infected = np.zeros(N)
-        self.infected[0] = 1 - self.healthy[0]
-        self.dead = np.zeros(N)
-        self.dead[0] = 0
-        self.recovered = np.zeros(N)
-        self.recovered[0] = 0
+        # self.healthy = np.zeros(N)
+        # self.healthy[0] = 1 - 1/population # number between 0 and 1 that gives the proportion of healthy ppl
+        # self.infected = np.zeros(N)
+        # self.infected[0] = 1 - self.healthy[0]
+        # self.dead = np.zeros(N)
+        # self.dead[0] = 0
+        # self.recovered = np.zeros(N)
+        # self.recovered[0] = 0
+        self.healthy = [1 - 1/population]
+        self.infected = [1 - self.healthy[0]]
+
         self.x = coord_x
         self.y = coord_y
         self.name = name # string
         self.id = id # int
+
         #params for the propagation model
         self.L = 10 #average infection length
         self.M = 0.1 #mortality rate
