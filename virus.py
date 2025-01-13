@@ -1,25 +1,22 @@
 from numpy import tanh as th
 
 class Virus:
-    def __init__(self, name, resistance=1, mutation_points=10):
+    def __init__(self, name, mutation_points=10):
         self.name = name
         self.symptoms = {}  # Dictionary of active symptoms
         self.mutation_points = mutation_points # evolution points (game currency)
 
-        self.resistance = resistance  # value that determines how fast the virus propagates
-        self.healing_rate = 1/resistance # Decreases when the virus' resistance increases
+        self.resistance = 0  # recovery value
+        self.healing_rate = 0 # SIRD Model coeff
 
-        self.propagation = 0  # base level of propagation
-        self.transmission_rate = 0 # Increases with the propagation
+        self.propagation = 0  # propagation value
+        self.transmission_rate = 0 # SIRD Model coeff
 
-        self.mortality = 0 # 
-        self.mortality_rate = 0 # value that determines how harmful the virus is 
+        self.mortality = 0 # mortality value
+        self.mortality_rate = 0 # SIRD Model coeff
 
-        self.length_infection = 1 # value that quantifies the avg length of infection
-        self.infection_duration = 30 # average number of turns that a person stays infected before dying or recovering
-
-        
-
+        self.length_infection = 1 # length of infection value
+        self.infection_duration = 30 # SIRD Model coeff
         
         """
         cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
@@ -38,18 +35,17 @@ class Virus:
         """
         if self.mutation_points >= symptom.mutation_cost:
             self.symptoms[symptom.name] = symptom
-            self.propagation += symptom.propagation_impact
-            # self.mortality_rate += symptom.mortality_impact
             self.mutation_points -= symptom.mutation_cost
-            print(f"{symptom.name} added ! Propagation level : {self.propagation}, Resistance level : {self.resistance}. Leftover points : {self.mutation_points}")
+            self.update_params()
         else:
-            print(f"Not enough mutation points to add {symptom.name}.")
+            message = f"Not enough mutation points to add {symptom.name}."
+            return message
 
     def upgrade_symptom(self, symptom_name):
         """
         Upgrades a symptom of the Class given its name
         """
-        if self.mutation_points > 0:
+        if self.mutation_points >= self.symptoms[symptom_name].mutation_cost:
             new_level = self.symptoms[symptom_name].upgrade()
             return new_level
         error_msg = "Not enough mutation points to upgrade this symptom"
@@ -66,14 +62,14 @@ class Virus:
         self.transmission_rate = th(self.transmission_rate)
         self.infection_duration = 30*th(self.length_infection)
         self.mortality_rate = 0.2*th(self.mortality)
-
         return
 
 
     def show_symptoms(self):
-        print(f"Symptoms of the virus {self.name}:")
+        message = [f"Symptoms of the virus {self.name}:"]
         for symptom in self.symptoms:
-            symptom.show_details()
+            message.append(symptom.show_details())
+        return message
 
     def show_stats(self):
         """
