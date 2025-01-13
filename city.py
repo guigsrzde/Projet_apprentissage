@@ -1,5 +1,13 @@
 import random
+import modele_propgation
 import numpy as np
+
+# Parameters
+T = 365  # Total time in days
+dt = 0.1  # Time step
+
+# Number of time steps
+N = int(T / dt)
 
 class City:
     def __init__(self, population, coord_x, coord_y, name, id, infected=False):
@@ -7,13 +15,14 @@ class City:
         Initialises a city and fills its parameters.
         """
         self.pop = population
-        if infected:
-            self.healthy = np.array([1-1/population])
-        else:
-            self.healthy = np.array([1.0])
-        self.infected = np.array([float(1 - self.healthy[0])])
-        self.dead = np.array([float(0)])
-        self.recovered = np.array([float(0)])
+        self.healthy = np.zeros(N)
+        self.healthy[0] = 1 - 1/population # number between 0 and 1 that gives the proportion of healthy ppl
+        self.infected = np.zeros(N)
+        self.infected[0] = 1 - self.healthy[0]
+        self.dead = np.zeros(N)
+        self.dead[0] = 0
+        self.recovered = np.zeros(N)
+        self.recovered[0] = 0
         self.x = coord_x
         self.y = coord_y
         self.name = name # string

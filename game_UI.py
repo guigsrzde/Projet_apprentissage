@@ -5,6 +5,7 @@ import parser
 import city
 import virus
 from matplotlib import pyplot as plt
+from modele_propgation import SIRD_model
 
 class Menu(QWidget):
     def __init__(self, filename, maxturns=10):
@@ -21,7 +22,7 @@ class Menu(QWidget):
         self._maxturns = maxturns
         super().__init__()
         self._build_ui()
-
+    
     def _add_pixmap(self):
         """
         Adds the map to the QGridLayout. Called in _build_ui().
@@ -146,6 +147,7 @@ class Menu(QWidget):
     def _click_propagation(self):
         if self._virus.mutation_points > 0:
             self._virus.propagation += 1
+            self._virus.transmission_rate = 1 - 1/self._virus.propagation
             self._virus.mutation_points -= 1
             self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
@@ -155,6 +157,7 @@ class Menu(QWidget):
     def _click_resistance(self):
         if self._virus.mutation_points > 0:
             self._virus.resistance += 1
+            self._virus.healing_rate = 1/resistance
             self._virus.mutation_points -= 1
             self._info_labels['virus_resistance'].setText(f"Virus Resistance factor: {self._virus.resistance}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
@@ -178,37 +181,15 @@ class Menu(QWidget):
         city = self._cities[index]
         self._info_labels['selected_city'].setText(f"Selected city: {city.name}")
         self._info_labels['city_population'].setText(f"Initial Population: {city.pop}")
-        self._info_labels['city_infected'].setText(f"Infected: {int(city.infected[-1]*city.pop+0.1)} people, {int(10000*city.infected[-1])/100}%")
-        self._info_labels['city_dead'].setText(f"Dead: {city.dead[-1]*city.pop} people, {int(10000*city.dead[-1])/100}%")
-        self._info_labels['city_healthy'].setText(f"Healthy: {int(city.healthy[-1]*city.pop+0.1)} people, {int(10000*city.healthy[-1])/100}%")
-        self._info_labels['city_recovered'].setText(f"Recovered: {int(city.recovered[-1]*city.pop+0.1)} people, {int(10000*city.recovered[-1])/100}%")
+        self._info_labels['city_infected'].setText(f"Infected: {city.infected}")
+        self._info_labels['city_dead'].setText(f"Dead: {city.dead}")
 
     def _click_time(self):
         """
         Increments the turn number and updates the corresponding label.
         """
         self._turn += 1
-        if self._turn == self._maxturns:
-            self._error_label.setText("This is your last turn!")
-        elif self._turn > self._maxturns:
-            self.close()
-            n = len(self._cities)
-            n = int(n**(1/2))
-            fig, ax = plt.subplots(n, n, figsize = (30,20))
-            fig.suptitle("Global Evolution of your virus", fontsize = 28)
-            for k in range(len(self._cities)):
-                town = self._cities[k]
-                row,col=k//n,k%n
-                ax[row][col].plot(town.healthy,label = 'healthy')
-                ax[row][col].plot(town.infected, label = 'infected')
-                ax[row][col].plot(town.recovered, label = 'recovered')
-                ax[row][col].plot(town.dead, label = 'dead')
-                ax[row][col].set_title(town.name)
-                ax[row][col].grid()
-            plt.show()
-        else:
-            self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
-        
+        self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
 
     def resizeEvent(self, event):
         """
