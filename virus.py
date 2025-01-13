@@ -1,17 +1,18 @@
+from numpy import tanh as th
 
 class Virus:
-    def __init__(self, name, propagation=1, resistance=1, mutation_points=10):
+    def __init__(self, name, resistance=1, mutation_points=10):
         self.name = name
         self.symptoms = {}  # Dictionary of active symptoms
         self.mutation_points = mutation_points # evolution points (game currency)
 
-        self.propagation = propagation  # base level of propagation
-        self.transmission_rate = 1 - 1/propagation # Increases with the propagation
-
         self.resistance = resistance  # value that determines how fast the virus propagates
         self.healing_rate = 1/resistance # Decreases when the virus' resistance increases
 
-        self.mortality = 0
+        self.propagation = 0  # base level of propagation
+        self.transmission_rate = 0 # Increases with the propagation
+
+        self.mortality = 0 # 
         self.mortality_rate = 0 # value that determines how harmful the virus is 
 
         self.length_infection = 1 # value that quantifies the avg length of infection
@@ -50,14 +51,23 @@ class Virus:
         """
         if self.mutation_points > 0:
             new_level = self.symptoms[symptom_name].upgrade()
+            return new_level
+        error_msg = "Not enough mutation points to upgrade this symptom"
+        return error_msg
 
     def update_params(self):
         """
         Updates the constants for the SIRD model we used
         """
         self.propagation = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys])
-        self.incidence = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys])
-        #self.
+        self.length_infection = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys])
+        self.mortality = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys])
+
+        self.transmission_rate = th(self.transmission_rate)
+        self.infection_duration = 30*th(self.length_infection)
+        self.mortality_rate = 0.2*th(self.mortality)
+
+        return
 
 
     def show_symptoms(self):
