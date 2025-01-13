@@ -102,7 +102,7 @@ class Menu(QWidget):
             self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {symptom.level}")
         self._info_labels['selected_city'] = QLabel(f"Selected city: {town.name}")
         self._info_labels['city_population'] = QLabel(f"Initial Population: {town.pop}")
-        self._info_labels['city_infected'] = QLabel(f"Infected: {int(town.infected[-1]*town.pop+0.1)} people, {int(10000*town.infected[-1])/100}%")
+        self._info_labels['city_infected'] = QLabel(f"Infected: {int(town.infected[-1])} people, {int(town.infected[-1])*100/town.pop}%")
         self._info_labels['city_dead'] = QLabel(f"Dead: {int(town.dead[-1]*town.pop+0.1)} people, {int(10000*town.dead[-1])/100}%")
         self._info_labels['city_healthy'] = QLabel(f"Healthy: {int(town.healthy[-1]*town.pop+0.1)} people, {int(10000*town.healthy[-1])/100}%")
         self._info_labels['city_recovered'] = QLabel(f"Recovered: {int(town.recovered[-1]*town.pop+0.1)} people, {int(10000*town.recovered[-1])/100}%")
@@ -183,14 +183,26 @@ class Menu(QWidget):
         city = self._cities[index]
         self._info_labels['selected_city'].setText(f"Selected city: {city.name}")
         self._info_labels['city_population'].setText(f"Initial Population: {city.pop}")
-        self._info_labels['city_infected'].setText(f"Infected: {city.infected[self._turn]}")
-        self._info_labels['city_dead'].setText(f"Dead: {city.dead[self._turn]}")
+        self._info_labels['city_infected'].setText(f"Infected: {city.infected[-1]}")
+        self._info_labels['city_dead'].setText(f"Dead: {city.dead[-1]}")
+        self._info_labels['city_healthy'].setText(f"Healthy: {city.healthy[-1]}")
 
     def _click_time(self):
         """
         Increments the turn number and updates the corresponding label.
         """
+        for i in range (len(self._cities)):
+            town = self._cities[i]
+            town.healthy[-1], town.infected[-1], town.recovered[-1], town.dead[-1] = SIRD_model(town.healthy, town.infected, town.recovered, town.dead, self._virus)
+            # print(town.healthy)
+
+            self._info_labels['city_infected'].setText(f"Infected: {town.infected[-1]}")
+            self._info_labels['city_dead'].setText(f"Dead: {town.dead[-1]}")
+            self._info_labels['city_healthy'].setText(f"Healthy: {town.healthy[-1]}")
+
         self._turn += 1
+        self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
+        # print(vars(self._virus)
         if self._turn == self._maxturns:
             self._error_label.setText("This is your last turn!")
         elif self._turn > self._maxturns:
@@ -211,19 +223,7 @@ class Menu(QWidget):
             plt.show()
         else:
             self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
-        # print(vars(self._virus)
 
-        for i in range (len(self._cities)):
-            town = self._cities[i]
-            town.healthy[self._turn], town.infected[self._turn], town.recovered[self._turn], town.dead[self._turn] = SIRD_model(town.healthy, town.infected, town.recovered, town.dead, self._virus, self._turn)
-            # print(town.healthy)
-
-            self._info_labels['city_infected'].setText(f"Infected: {town.infected[self._turn]}")
-            self._info_labels['city_dead'].setText(f"Dead: {town.dead[self._turn]}")
-            self._info_labels['city_healthy'].setText(f"Healthy: {town.healthy[self._turn]}")
-
-        
-        
         
 
     def resizeEvent(self, event):
