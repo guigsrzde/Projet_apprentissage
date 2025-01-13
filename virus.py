@@ -1,6 +1,6 @@
 
 class Virus:
-    def __init__(self, name, propagation=1, resistance=1, mutation_points=100):
+    def __init__(self, name, propagation=1, resistance=1, mutation_points=10):
         self.name = name
         self.symptoms = []  # List of active symptoms
 
@@ -24,6 +24,11 @@ class Virus:
         self.add_symptom(fever)  
         self.add_symptom(death)  
         """
+    
+    def update_params(self):
+        self.propagation_rate = 1 - 1/self.propagation
+        self.healing_rate = 1/self.resistance
+
     def add_symptom(self, symptom):
         if self.mutation_points >= symptom.mutation_cost:
             self.symptoms.append(symptom)
@@ -48,26 +53,41 @@ class Virus:
             symptom.show_details()
 
     def show_stats(self):
-        print(f"Virus {self.name}: Propagation={self.propagation}, Resistance={self.resistance}, Mutation points={self.mutation_points}")
-
+        message = f"Virus {self.name}: Propagation={self.propagation}, Resistance={self.resistance}, Mutation points={self.mutation_points}"
+        # print(message)
+        return message
 
 
 
 class Symptom:
-    def __init__(self, name, seriousness, mutation_cost, propagation_impact, mortality_impact):
+    def __init__(self, name, mutation_cost, recov_rate_impact, propagation_impact, mortality_impact):
         self.name = name
-        self.seriousness = seriousness
         self.mutation_cost = mutation_cost
-        self.propagation_impact = propagation_impact
-        self.mortality_impact = mortality_impact
         self.level = 0
 
+        self.recov_rate_impact0 = recov_rate_impact
+        self.propagation_impact0 = propagation_impact
+        self.mortality_impact0 = mortality_impact
+
+        self.recov_rate_impact = recov_rate_impact
+        self.propagation_impact = propagation_impact
+        self.mortality_impact = mortality_impact
+        
+
     def show_details(self):
-        print(f"{self.name} - Seriousness: {self.seriousness}, Cost: {self.mutation_cost}, Propagation: {self.propagation_impact}, Mortality: {self.mortality_impact}")
+        message = f"{self.name} - Seriousness: {self.seriousness}, Cost: {self.mutation_cost}, Propagation: {self.propagation_impact}, Mortality: {self.mortality_impact}"
+        # print(message)
+        return message
+
     
     def upgrade(self):
-        #A faire
         self.level +=1
+        self.mortality_impact += self.mortality_impact0
+        self.propagation_impact += self.propagation_impact0
+        self.recov_rate_impact += self.recov_rate_impact0
+        return self.level
+
+
 
 """
 cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
