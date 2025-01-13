@@ -10,6 +10,7 @@
 -Historique actions
 -Mettre à jour l'affichage: pourcentage + nombre
 -Plot les bonnes valeurs dans le graphe 
+- lien recovery rate-duree-d'infection-propagation
 
 FAIT
 
