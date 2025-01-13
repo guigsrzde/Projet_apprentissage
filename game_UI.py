@@ -163,8 +163,12 @@ class Menu(QWidget):
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
             self._error_label.setText("Not enough points available to upgrade the resistance of the virus.")
-        self._info_labels['city_infected'].setText(f"Infected: {city.infected[self._turn]}")
-        self._info_labels['city_dead'].setText(f"Dead: {city.dead[self._turn]}")
+        
+        for i in range (len(self._cities)):
+            town = self._cities[i]
+            self._info_labels['city_infected'].setText(f"Infected: {town.infected[-1]}")
+            self._info_labels['city_dead'].setText(f"Dead: {town.dead[-1]}")
+        
 
     def _click_symptom(self, index):
         if self._virus.mutation_points > 0:
