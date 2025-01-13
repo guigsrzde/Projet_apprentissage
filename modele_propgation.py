@@ -12,11 +12,11 @@ N = int(T / dt)
 # Initialization of arrays
 t = np.linspace(0, T, N)
 
-# Initial conditions
-healthy[0] = 0.99  # Initial proportion of the population susceptible
-infected[0] = 0.01  # Initial proportion of the population infected
-recovered[0] = 0.0   # Initial proportion of the population recovered
-deceased[0] = 0.0   # Initial proportion of the population deceased
+# # Initial conditions
+# healthy[0] = 0.99  # Initial proportion of the population susceptible
+# infected[0] = 0.01  # Initial proportion of the population infected
+# recovered[0] = 0.0   # Initial proportion of the population recovered
+# deceased[0] = 0.0   # Initial proportion of the population deceased
     
 def SIRD_model(S, I, R, D, virus, n):
 
@@ -61,6 +61,6 @@ if __name__ == "__main__":
     S_, I_, R_, D_ = SIRD_model(S, I, R, D, virus, 1)
     print(S_, I_, R_, D_)
     # Affichage des résultats
-    plot_SIRD(t, S, I, R, D)
+    plot_SIRD(t, S_, I_, R_, D_)
 
     

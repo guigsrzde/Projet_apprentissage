@@ -157,12 +157,14 @@ class Menu(QWidget):
     def _click_resistance(self):
         if self._virus.mutation_points > 0:
             self._virus.resistance += 1
-            self._virus.healing_rate = 1/resistance
+            self._virus.healing_rate = 1/self._virus.resistance
             self._virus.mutation_points -= 1
             self._info_labels['virus_resistance'].setText(f"Virus Resistance factor: {self._virus.resistance}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
             self._error_label.setText("Not enough points available to upgrade the resistance of the virus.")
+        self._info_labels['city_infected'].setText(f"Infected: {city.infected[self._turn]}")
+        self._info_labels['city_dead'].setText(f"Dead: {city.dead[self._turn]}")
 
     def _click_symptom(self, index):
         if self._virus.mutation_points > 0:
@@ -181,8 +183,8 @@ class Menu(QWidget):
         city = self._cities[index]
         self._info_labels['selected_city'].setText(f"Selected city: {city.name}")
         self._info_labels['city_population'].setText(f"Initial Population: {city.pop}")
-        self._info_labels['city_infected'].setText(f"Infected: {city.infected}")
-        self._info_labels['city_dead'].setText(f"Dead: {city.dead}")
+        self._info_labels['city_infected'].setText(f"Infected: {city.infected[self._turn]}")
+        self._info_labels['city_dead'].setText(f"Dead: {city.dead[self._turn]}")
 
     def _click_time(self):
         """
@@ -190,6 +192,19 @@ class Menu(QWidget):
         """
         self._turn += 1
         self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
+        # print(vars(self._virus)
+
+        for i in range (len(self._cities)):
+            town = self._cities[i]
+            town.healthy[self._turn], town.infected[self._turn], town.recovered[self._turn], town.dead[self._turn] = SIRD_model(town.healthy, town.infected, town.recovered, town.dead, self._virus, self._turn)
+            # print(town.healthy)
+
+            self._info_labels['city_infected'].setText(f"Infected: {town.infected[self._turn]}")
+            self._info_labels['city_dead'].setText(f"Dead: {town.dead[self._turn]}")
+            self._info_labels['city_healthy'].setText(f"Healthy: {town.healthy[self._turn]}")
+
+        
+        
 
     def resizeEvent(self, event):
         """
