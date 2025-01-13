@@ -2,7 +2,7 @@
 class Virus:
     def __init__(self, name, propagation=1, resistance=1, mutation_points=10):
         self.name = name
-        self.symptoms = []  # List of active symptoms
+        self.symptoms = {}  # Dictionary of active symptoms
 
         self.propagation = propagation  # base level of propagation
         self.transmission_rate = 1 - 1/propagation # Increases with the propagation
@@ -27,13 +27,12 @@ class Virus:
         self.add_symptom(death)  
         """
     
-    def update_params(self):
-        self.propagation_rate = 1 - 1/self.propagation
-        self.healing_rate = 1/self.resistance
-
     def add_symptom(self, symptom):
+        """
+        Add a symptom to the virus class
+        """
         if self.mutation_points >= symptom.mutation_cost:
-            self.symptoms.append(symptom)
+            self.symptoms[symptom.name] = symptom
             self.propagation += symptom.propagation_impact
             # self.mortality_rate += symptom.mortality_impact
             self.mutation_points -= symptom.mutation_cost
@@ -41,13 +40,17 @@ class Virus:
         else:
             print(f"Not enough mutation points to add {symptom.name}.")
 
-    def intensify(self, caracteristic, value):
-        if self.mutation_points >= value:
-            setattr(self, caracteristic, getattr(self, caracteristic) + value)
-            self.mutation_points -= value
-            print(f"{caracteristic.capitalize()} upgraded to {getattr(self, caracteristic)}. Leftover points : {self.mutation_points}")
-        else:
-            print("Not enough mutation points")
+    def upgrade_symptom(self, symptom_name):
+        """
+        Upgrades a symptom of the Class given its name
+        """
+        if self.mutation_points > 0:
+            new_level = self.symptoms[symptom_name].upgrade()
+
+    def update_params(self):
+        self.propagation_rate = 1 - 1/self.propagation
+        self.healing_rate = 1/self.resistance
+
 
     def show_symptoms(self):
         print(f"Symptoms of the virus {self.name}:")
@@ -55,6 +58,9 @@ class Virus:
             symptom.show_details()
 
     def show_stats(self):
+        """
+        Returns an str that describes the global attributes of the virus. Can be used to show to the user or for debug
+        """
         message = f"Virus {self.name}: Propagation={self.propagation}, Resistance={self.resistance}, Mutation points={self.mutation_points}"
         # print(message)
         return message
@@ -63,6 +69,9 @@ class Virus:
 
 class Symptom:
     def __init__(self, name, mutation_cost, recov_rate_impact, propagation_impact, mortality_impact):
+        """
+        Initializes new symptoms to add to the virus
+        """
         self.name = name
         self.mutation_cost = mutation_cost
         self.level = 0
@@ -77,12 +86,19 @@ class Symptom:
         
 
     def show_details(self):
+        """
+        Information on one of the user's symptoms. Returns an str that can be used to show to the user or debug
+        """
         message = f"{self.name} - Seriousness: {self.seriousness}, Cost: {self.mutation_cost}, Propagation: {self.propagation_impact}, Mortality: {self.mortality_impact}"
         # print(message)
         return message
 
     
     def upgrade(self):
+        """
+        Upgrades the stats of a symptom by one level
+        Returns the new level of the symptom (int)
+        """
         self.level +=1
         self.mortality_impact += self.mortality_impact0
         self.propagation_impact += self.propagation_impact0

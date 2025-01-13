@@ -189,7 +189,27 @@ class Menu(QWidget):
         Increments the turn number and updates the corresponding label.
         """
         self._turn += 1
-        self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
+        if self._turn == self._maxturns:
+            self._error_label.setText("This is your last turn!")
+        elif self._turn > self._maxturns:
+            self.close()
+            n = len(self._cities)
+            n = int(n**(1/2))
+            fig, ax = plt.subplots(n, n, figsize = (30,20))
+            fig.suptitle("Global Evolution of your virus", fontsize = 28)
+            for k in range(len(self._cities)):
+                town = self._cities[k]
+                row,col=k//n,k%n
+                ax[row][col].plot(town.healthy,label = 'healthy')
+                ax[row][col].plot(town.infected, label = 'infected')
+                ax[row][col].plot(town.recovered, label = 'recovered')
+                ax[row][col].plot(town.dead, label = 'dead')
+                ax[row][col].set_title(town.name)
+                ax[row][col].grid()
+            plt.show()
+        else:
+            self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
+        
 
     def resizeEvent(self, event):
         """
