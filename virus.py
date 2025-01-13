@@ -3,19 +3,23 @@ class Virus:
     def __init__(self, name, propagation=1, resistance=1, mutation_points=10):
         self.name = name
         self.symptoms = {}  # Dictionary of active symptoms
+        self.mutation_points = mutation_points # evolution points (game currency)
 
         self.propagation = propagation  # base level of propagation
         self.transmission_rate = 1 - 1/propagation # Increases with the propagation
 
-        self.resistance = resistance  # base level of resistance
+        self.resistance = resistance  # value that determines how fast the virus propagates
         self.healing_rate = 1/resistance # Decreases when the virus' resistance increases
 
-        self.mortality_rate = 0.1 # value that determines how harmful the virus is 
+        self.mortality = 0
+        self.mortality_rate = 0 # value that determines how harmful the virus is 
 
-        self.mutation_points = mutation_points # evolution points (game currency)
-
+        self.length_infection = 1 # value that quantifies the avg length of infection
         self.infection_duration = 30 # average number of turns that a person stays infected before dying or recovering
-        self.incidence = 1 # value that determines how fast the virus propagates
+
+        
+
+        
         """
         cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
         fever = Symptom("Fever", seriousness=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
@@ -48,8 +52,12 @@ class Virus:
             new_level = self.symptoms[symptom_name].upgrade()
 
     def update_params(self):
-        self.propagation_rate = 1 - 1/self.propagation
-        self.healing_rate = 1/self.resistance
+        """
+        Updates the constants for the SIRD model we used
+        """
+        self.propagation = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys])
+        self.incidence = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys])
+        #self.
 
 
     def show_symptoms(self):
