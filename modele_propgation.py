@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import virus
 
 # Parameters
 T = 365  # Total time in days
@@ -10,23 +11,19 @@ N = int(T / dt)
 
 # Initialization of arrays
 t = np.linspace(0, T, N)
-S = np.zeros(N)
-I = np.zeros(N)
-R = np.zeros(N)
-D = np.zeros(N)
 
 # Initial conditions
-S[0] = 0.99  # Initial proportion of the population susceptible
-I[0] = 0.01  # Initial proportion of the population infected
-R[0] = 0.0   # Initial proportion of the population recovered
-D[0] = 0.0   # Initial proportion of the population deceased
+healthy[0] = 0.99  # Initial proportion of the population susceptible
+infected[0] = 0.01  # Initial proportion of the population infected
+recovered[0] = 0.0   # Initial proportion of the population recovered
+deceased[0] = 0.0   # Initial proportion of the population deceased
     
-def SIRD_model(S, I, R, D, T, dt, virus, n):
+def SIRD_model(S, I, R, D, virus, n):
 
     # Updated parameters
-    beta = 
-    gamma = 
-    mu = 
+    beta = virus.transmission_rate
+    gamma = virus.healing_rate
+    mu = virus.mortality_rate
 
     # Simulation avec la méthode d'Euler
     dS = -beta * S[n-1] * I[n-1] * dt
@@ -43,40 +40,26 @@ def SIRD_model(S, I, R, D, T, dt, virus, n):
 
 
 
-# def plot_SIRD(t, S, I, R, D):
-#     """Affiche les résultats du modèle SIRD."""
-#     plt.figure(figsize=(10, 6))
-#     plt.plot(t, S, label='S (Susceptibles)', color='blue')
-#     plt.plot(t, I, label='I (Infectés)', color='red')
-#     plt.plot(t, R, label='R (Rétablis)', color='green')
-#     plt.plot(t, D, label='D (Décédés)', color='black')
-#     plt.xlabel('Temps (jours)')
-#     plt.ylabel('Proportion de la population')
-#     plt.title('Modèle SIRD - Méthode d\'Euler')
-#     plt.legend()
-#     plt.grid()
-#     plt.show()
+def plot_SIRD(t, S, I, R, D):
+    """Affiche les résultats du modèle SIRD."""
+    plt.figure(figsize=(10, 6))
+    plt.plot(t, S, label='S (Susceptibles)', color='blue')
+    plt.plot(t, I, label='I (Infectés)', color='red')
+    plt.plot(t, R, label='R (Rétablis)', color='green')
+    plt.plot(t, D, label='D (Décédés)', color='black')
+    plt.xlabel('Temps (jours)')
+    plt.ylabel('Proportion de la population')
+    plt.title('Modèle SIRD - Méthode d\'Euler')
+    plt.legend()
+    plt.grid()
+    plt.show()
 
-# # Exemple d'utilisation
+# Exemple d'utilisation
 if __name__ == "__main__":
-#     # Paramètres initiaux
-#     S0 = 0.99  # Population initiale susceptible
-#     I0 = 0.01  # Population initiale infectée
-#     R0 = 0.0   # Population initiale rétablie
-#     D0 = 0.0   # Population initiale décédée
 
-#     # Paramètres du modèle
-#     beta = 0.3    # Transmission rate
-#     gamma = 0.0   # Healing rate
-#     mu = 0.05     # Mortality rate
-
-#     # Paramètres temporels
-#     T = 100  # Temps total en jours
-#     dt = 0.1  # Pas de temps
-
-#     # Simulation
-#     t, S, I, R, D = SIRD_model(S0, I0, R0, D0, beta, gamma, mu, T, dt)
-    print(S[1])
+    # Simulation
+    S_, I_, R_, D_ = SIRD_model(S, I, R, D, virus, 1)
+    print(S_, I_, R_, D_)
     # Affichage des résultats
     plot_SIRD(t, S, I, R, D)
 

@@ -5,12 +5,12 @@ class Virus:
         self.symptoms = []  # List of active symptoms
 
         self.propagation = propagation  # base level of propagation
-        self.propagation_rate = 1 - 1/propagation # Increases with the propagation
+        self.transmission_rate = 1 - 1/propagation # Increases with the propagation
 
         self.resistance = resistance  # base level of resistance
         self.healing_rate = 1/resistance # Decreases when the virus' resistance increases
 
-        self.mortality = 0.1 # value that determines how harmful the virus is 
+        self.mortality_rate = 0.1 # value that determines how harmful the virus is 
 
         self.mutation_points = mutation_points # evolution points (game currency)
 
@@ -30,7 +30,7 @@ class Virus:
         if self.mutation_points >= symptom.mutation_cost:
             self.symptoms.append(symptom)
             self.propagation += symptom.propagation_impact
-            self.mortality += symptom.mortality_impact
+            # self.mortality_rate += symptom.mortality_impact
             self.mutation_points -= symptom.mutation_cost
             print(f"{symptom.name} added ! Propagation level : {self.propagation}, Resistance level : {self.resistance}. Leftover points : {self.mutation_points}")
         else:

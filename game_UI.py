@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 import parser
 import city
 import virus
+from modele_propgation import SIRD_model
 
 class Menu(QWidget):
     def __init__(self, filename):
@@ -19,7 +20,7 @@ class Menu(QWidget):
         self._turn = 0
         super().__init__()
         self._build_ui()
-
+    
     def _add_pixmap(self):
         """
         Adds the map to the QGridLayout. Called in _build_ui().
@@ -99,8 +100,9 @@ class Menu(QWidget):
             self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {symptom.level}")
         self._info_labels['selected_city'] = QLabel(f"Selected city: {town.name}")
         self._info_labels['city_population'] = QLabel(f"Initial Population: {town.pop}")
-        self._info_labels['city_infected'] = QLabel(f"Infected: {town.infected}")
-        self._info_labels['city_dead'] = QLabel(f"Dead: {town.dead}")
+        self._info_labels['city_infected'] = QLabel(f"Infected: {town.infected[0]}")
+        self._info_labels['city_dead'] = QLabel(f"Dead: {town.dead[0]}")
+        self._info_labels['city_healthy'] = QLabel(f"Healthy: {town.healthy[0]}")
         self._info_labels['turn_number'] = QLabel(f"Turn number: {self._turn}")
 
         # Add labels to layout
@@ -142,6 +144,7 @@ class Menu(QWidget):
     def _click_propagation(self):
         if self._virus.mutation_points > 0:
             self._virus.propagation += 1
+            self._virus.transmission_rate = 1 - 1/self._virus.propagation
             self._virus.mutation_points -= 1
             self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
@@ -151,6 +154,7 @@ class Menu(QWidget):
     def _click_resistance(self):
         if self._virus.mutation_points > 0:
             self._virus.resistance += 1
+            self._virus.healing_rate = 1/resistance
             self._virus.mutation_points -= 1
             self._info_labels['virus_resistance'].setText(f"Virus Resistance factor: {self._virus.resistance}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
@@ -174,8 +178,8 @@ class Menu(QWidget):
         city = self._cities[index]
         self._info_labels['selected_city'].setText(f"Selected city: {city.name}")
         self._info_labels['city_population'].setText(f"Initial Population: {city.pop}")
-        self._info_labels['city_infected'].setText(f"Infected: {city.infected}")
-        self._info_labels['city_dead'].setText(f"Dead: {city.dead}")
+        self._info_labels['city_infected'].setText(f"Infected: {city.infected[self._turn]}")
+        self._info_labels['city_dead'].setText(f"Dead: {city.dead[self._turn]}")
 
     def _click_time(self):
         """
@@ -183,7 +187,19 @@ class Menu(QWidget):
         """
         self._turn += 1
         self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
+        # print(vars(self._virus)
 
+        for i in range (len(self._cities)):
+            town = self._cities[i]
+            town.healthy[self._turn], town.infected[self._turn], town.recovered[self._turn], town.dead[self._turn] = SIRD_model(town.healthy, town.infected, town.recovered, town.dead, self._virus, self._turn)
+            # print(town.healthy)
+
+            self._info_labels['city_infected'].setText(f"Infected: {town.infected[self._turn]}")
+            self._info_labels['city_dead'].setText(f"Dead: {town.dead[self._turn]}")
+            self._info_labels['city_healthy'].setText(f"Healthy: {town.healthy[self._turn]}")
+
+        
+        
     def resizeEvent(self, event):
         """
         Rescales the image based on window size.
