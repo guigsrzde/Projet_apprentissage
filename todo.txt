@@ -1,19 +1,16 @@
--Restructurer la classe virus+symptômes
 -Fonction qui donne les paramètres en fonction des caractéristiques du virus
 -Mise en place de la propagation dans le jeu
 -Débloquer les symptomes
 -Enregistrer modifications
--Site web ?
 -Rediger 
 -Onglet pour acceder aux graphes
 -Relier fonction propagation spatiale
 -Historique actions
--Mettre à jour l'affichage: pourcentage + nombre
--Plot les bonnes valeurs dans le graphe 
-- lien recovery rate-duree-d'infection-propagation
+-Plot les bonnes valeurs dans le graphe
+-lien recovery rate-duree-d'infection-propagation
 
 FAIT
-
--Revoir la mort 
+-Restructurer la classe virus+symptômes
 -Intéraction entre les villes
 -Affichage du graphique à la fin du jeu + limiter le nombre de tours
+-Mettre à jour l'affichage: pourcentage + nombre

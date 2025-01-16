@@ -59,9 +59,9 @@ class Virus:
         self.length_infection = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys])
         self.mortality = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys])
 
-        self.transmission_rate = th(self.transmission_rate)
-        self.infection_duration = 30*th(self.length_infection)
-        self.mortality_rate = 0.2*th(self.mortality)
+        self.transmission_rate = th(self.transmission_rate/3)
+        self.infection_duration = 30*th(self.length_infection/3)
+        self.mortality_rate = 0.2*th(self.mortality/3)
         return
 
 
@@ -120,24 +120,3 @@ class Symptom:
         return self.level
 
 
-
-"""
-cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
-fever = Symptom("Fever", seriousness=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
-death = Symptom("Death", seriousness=10, mutation_cost=8, propagation_impact=0, mortality_impact=5)
-
-# Create a virus
-virus = Virus("SuperVirus", propagation=1, resistance=1, mutation_points=10)
-
-# Display initial stats
-virus.show_stats()
-
-# Add symptoms
-virus.add_symptom(cough)  # Should work
-virus.add_symptom(fever)  # Should work if there are enough points
-virus.add_symptom(death)  # May fail if points are insufficient
-
-# Display symptoms and stats after evolutions
-virus.show_symptoms()
-virus.show_stats()
-"""

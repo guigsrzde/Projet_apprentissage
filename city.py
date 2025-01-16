@@ -15,20 +15,11 @@ class City:
         Initialises a city and fills its parameters.
         """
         self.pop = population
-        # self.healthy = np.zeros(N)
-        # self.healthy[0] = 1 - 1/population # number between 0 and 1 that gives the proportion of healthy ppl
-        # self.infected = np.zeros(N)
-        # self.infected[0] = 1 - self.healthy[0]
-        # self.dead = np.zeros(N)
-        # self.dead[0] = 0
-        # self.recovered = np.zeros(N)
-        # self.recovered[0] = 0  
-        self.infected = [1]
-        self.healthy = [self.pop-self.infected[0]]
-        # if infected : 
-        #     self.infected = [1]
-        # else :
-        #     self.infected = [0]
+        a = []
+        if not infected : a = [1/self.pop] 
+        else:  a = [0]
+        self.infected = a
+        self.healthy = [1-self.infected[0]]
         self.dead = [0]
         self.recovered = [0]
 
@@ -36,11 +27,6 @@ class City:
         self.y = coord_y
         self.name = name # string
         self.id = id # int
-
-        #params for the propagation model
-        self.L = 10 #average infection length
-        self.M = 0.1 #mortality rate
-        self.B = 1 #propagation factor
     
     @classmethod
     def random(cls, max_x, max_y, id):
