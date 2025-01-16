@@ -6,16 +6,17 @@ class Virus:
         self.symptoms = {}  # Dictionary of active symptoms
         self.mutation_points = mutation_points # evolution points (game currency)
 
-        self.resistance = 0  # recovery value
+        self.resistance = 0  # recovery value (virus only)
         self.healing_rate = 0 # SIRD Model coeff
 
-        self.propagation = 0  # propagation value
+        self.propagation = 0 # propagation value (virus only)
+        self.propagation_symptoms = 0  # propagation value (symptoms only)
         self.transmission_rate = 0 # SIRD Model coeff
 
-        self.mortality = 0 # mortality value
+        self.mortality_symptoms = 0 # mortality value (symptoms only)
         self.mortality_rate = 0 # SIRD Model coeff
 
-        self.length_infection = 1 # length of infection value
+        self.length_infection_symptoms = 1 # length of infection value (symptoms only)
         self.infection_duration = 30 # SIRD Model coeff
         
         """
@@ -47,21 +48,27 @@ class Virus:
         """
         if self.mutation_points >= self.symptoms[symptom_name].mutation_cost:
             new_level = self.symptoms[symptom_name].upgrade()
+            self.update_params()
             return new_level
         error_msg = "Not enough mutation points to upgrade this symptom"
         return error_msg
+    
+    def upgrade_propagation(self):
+        self.propagation += 1
+        self.mutation_points -= 1
+        self.update_params()
 
     def update_params(self):
         """
         Updates the constants for the SIRD model we used
         """
-        self.propagation = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys])
-        self.length_infection = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys])
-        self.mortality = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys])
+        self.propagation_symptoms = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys()])
+        self.length_infection_symptoms = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys()])
+        self.mortality_symptoms = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys()])
 
-        self.transmission_rate = th(self.transmission_rate/3)
-        self.infection_duration = 30*th(self.length_infection/3)
-        self.mortality_rate = 0.2*th(self.mortality/3)
+        self.transmission_rate = th((self.propagation+self.propagation_symptoms)/3)
+        self.infection_duration = 30*th((self.length_infection_symptoms+self.resistance)/3)
+        self.mortality_rate = 0.2*th(self.mortality_symptoms/3)
         return
 
 

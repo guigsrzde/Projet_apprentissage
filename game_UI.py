@@ -156,9 +156,7 @@ class Menu(QWidget):
 
     def _click_propagation(self):
         if self._virus.mutation_points > 0:
-            self._virus.propagation += 1
-            self._virus.transmission_rate = 1 - 1/self._virus.propagation
-            self._virus.mutation_points -= 1
+            self._virus.upgrade_propagation()
             self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:

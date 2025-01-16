@@ -74,7 +74,7 @@ def plot_SIRD(t, S, I, R, D):
     plt.grid()
     plt.show()
 
-# Exemple d'utilisation
+"""# Exemple d'utilisation
 if __name__ == "__main__":
 
     # Simulation
@@ -82,5 +82,5 @@ if __name__ == "__main__":
     print(S_, I_, R_, D_)
     # Affichage des résultats
     plot_SIRD(t, S_, I_, R_, D_)
-
+"""
     

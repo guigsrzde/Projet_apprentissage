@@ -16,7 +16,7 @@ class City:
         """
         self.pop = population
         a = []
-        if not infected : a = [1/self.pop] 
+        if infected : a = [1/self.pop] 
         else:  a = [0]
         self.infected = a
         self.healthy = [1-self.infected[0]]
