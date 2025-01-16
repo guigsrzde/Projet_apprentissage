@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel, QVBoxLayo
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 import parser
-import city
+from city import global_propagation
 import virus
 from matplotlib import pyplot as plt
 
@@ -205,12 +205,13 @@ class Menu(QWidget):
         Increments the turn number and updates the corresponding label.
         """
         self._turn += 1
-
+        propag_msg = global_propagation(self._cities)
+        
         for i in range (len(self._cities)):
             town = self._cities[i]
-            town.propagation_tick(self._virus, 30)
+            town.propagation_tick(self._virus, nb_ticks=30)
 
-        self.update_all_labels()
+        self.update_all_labels(event_message=propag_msg)
 
         if self._turn == self._maxturns:
             self._error_label.setText("This is your last turn!")
@@ -232,8 +233,7 @@ class Menu(QWidget):
             plt.show()
         else:
             self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
-
-        
+        return
 
     def resizeEvent(self, event):
         """

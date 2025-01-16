@@ -1,4 +1,4 @@
-import random
+from random import randint
 from modele_propgation import SIRD_model
 import numpy as np
 
@@ -33,12 +33,12 @@ class City:
         """
         initialises a random city given maximum x and y coordinates
         """
-        x = random.randint(0,max_x)
-        y = random.randint(0,max_y)
-        name = chr(ord('A') + random.randint(0,25))
-        for i in range(random.randint(2,8)):
-            name += chr(ord('a') + random.randint(0,25))
-        population = random.randint(50000, 1000000)
+        x = randint(0,max_x)
+        y = randint(0,max_y)
+        name = chr(ord('A') + randint(0,25))
+        for i in range(randint(2,8)):
+            name += chr(ord('a') + randint(0,25))
+        population = randint(50000, 1000000)
         return cls(population, x, y, name, id)
     
     def add_values(self, new_recovered, new_healthy, new_infected):
@@ -61,7 +61,7 @@ class City:
         """
         returns a bool that tells us if someone has the virus in the city
         """
-        return self.infected>0
+        return self.infected[-1]>0
     
     def infect(self):
         """
@@ -76,18 +76,11 @@ class City:
         """
         model of propagation to new cities.
         """
-        p = 100/self.distance(town)*random.randint(0,self.pop)/self.pop
+        p = randint(0,self.pop)
         if p<= self.infected[-1]*self.pop and (not town.is_infected()):
             town.infect()
             return True
         return False
-    
-    def maj_param_propagation(self, disease):
-        """
-        update the model parameters in function of how the disease has evolved
-        """
-        #TODO
-        return
     
     def propagation_tick(self, disease, nb_ticks):
         """
@@ -97,3 +90,15 @@ class City:
             h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, disease)
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
         return
+
+def global_propagation(list_cities):
+    """
+    Function that allows the virus to propagate between cities
+    """
+    newly_infected_cities_id = []
+    for town1 in list_cities:
+        for town2 in list_cities:
+            if(town1.propagate_to(town2)):
+                newly_infected_cities_id.append(town2.id)
+    message = f"The virus has arrived to these cities: {[str(list_cities[i].name) for i in newly_infected_cities_id]}"
+    return message
