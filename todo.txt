@@ -1,9 +1,7 @@
--Mise en place de la propagation dans le jeu
 -Débloquer les symptomes
 -Enregistrer modifications
 -Rediger 
 -Onglet pour acceder aux graphes
--Relier fonction propagation spatiale
 -Historique actions
 -Plot les bonnes valeurs dans le graphe
 
@@ -14,3 +12,5 @@ FAIT
 -Mettre à jour l'affichage: pourcentage + nombre
 -Fonction qui donne les paramètres en fonction des caractéristiques du virus
 -lien recovery rate-duree-d'infection-propagation
+-Mise en place de la propagation dans le jeu
+-Relier fonction propagation spatiale

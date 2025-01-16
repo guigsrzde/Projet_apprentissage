@@ -179,9 +179,8 @@ class Menu(QWidget):
         
     def _click_symptom(self, index):
         if self._virus.mutation_points > 0:
-            symptom = self._virus.symptoms[index]
             self._virus.symptoms[index].upgrade()
-            self._virus.mutation_points -= 1
+            symptom = self._virus.symptoms[index]
             self._info_labels[f'virus_symptoms_{str(symptom.name)}'].setText(f"Virus Symptom {str(symptom.name)} factor: {symptom.level}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
@@ -206,7 +205,7 @@ class Menu(QWidget):
         """
         self._turn += 1
         propag_msg = global_propagation(self._cities)
-        
+
         for i in range (len(self._cities)):
             town = self._cities[i]
             town.propagation_tick(self._virus, nb_ticks=30)
