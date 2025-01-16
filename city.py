@@ -1,5 +1,5 @@
 import random
-import modele_propgation
+from modele_propgation import SIRD_model
 import numpy as np
 
 # Parameters
@@ -89,9 +89,11 @@ class City:
         #TODO
         return
     
-    def propagation_tick(self, disease):
+    def propagation_tick(self, disease, nb_ticks):
         """
         Implements one time tick of propagation in our model with Euler's method
         """
-        #TODO
+        for i in range(nb_ticks):
+            h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, disease)
+            self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
         return

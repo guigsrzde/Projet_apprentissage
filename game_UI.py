@@ -5,7 +5,7 @@ import parser
 import city
 import virus
 from matplotlib import pyplot as plt
-from modele_propgation import SIRD_model
+
 
 class Menu(QWidget):
     def __init__(self, filename, maxturns=10):
@@ -197,7 +197,7 @@ class Menu(QWidget):
         town = self._cities[index]
         self._info_labels['selected_city'].setText(f"Selected city: {town.name}")
         self._info_labels['city_population'].setText(f"Initial Population: {town.pop}")
-        self._info_labels['city_infected'].setText(f"Infected: {int(town.infected[-1]*town.pop+0.1)} people, {int(town.infected[-1])*100/town.pop}%")
+        self._info_labels['city_infected'].setText(f"Infected: {int(town.infected[-1]*town.pop+0.1)} people, {int(10000*town.infected[-1])/100}%")
         self._info_labels['city_dead'].setText(f"Dead: {int(town.dead[-1]*town.pop+0.1)} people, {int(10000*town.dead[-1])/100}%")
         self._info_labels['city_healthy'].setText(f"Healthy: {int(town.healthy[-1]*town.pop+0.1)} people, {int(10000*town.healthy[-1])/100}%")
         self._info_labels['city_recovered'].setText(f"Recovered: {int(town.recovered[-1]*town.pop+0.1)} people, {int(10000*town.recovered[-1])/100}%")
@@ -210,10 +210,10 @@ class Menu(QWidget):
 
         for i in range (len(self._cities)):
             town = self._cities[i]
-            town.healthy[-1], town.infected[-1], town.recovered[-1], town.dead[-1] = SIRD_model(town.healthy, town.infected, town.recovered, town.dead, self._virus)
+            town.propagation_tick(self._virus, 30)
 
         self.update_all_labels()
-        
+
         if self._turn == self._maxturns:
             self._error_label.setText("This is your last turn!")
         elif self._turn > self._maxturns:
