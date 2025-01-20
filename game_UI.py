@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel, QVBoxLayout
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt
 import parser
 from city import global_propagation
@@ -164,6 +164,19 @@ class Menu(QWidget):
         if event_message is not None:
             self._unexpected_event_label.setText(event_message)
         return
+    
+    def update_city_status(self, city):
+        painter = QPainter(self.pixmap)
+        x, y = city.coord_x, city.coord_y   
+        if city.infected[-1]*city.pop > 0:  # If there are infections
+            color = QColor("red")
+        else:  # If there are no infections
+            color = QColor("green")
+        pen = QPen(color, 5, Qt.SolidLine)
+        painter.setPen(pen)
+        radius = 10  
+        painter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius)
+        painter.end()
 
     def _click_propagation(self):
         if self._virus.mutation_points > 0:
@@ -221,6 +234,7 @@ class Menu(QWidget):
         for i in range (len(self._cities)):
             town = self._cities[i]
             town.propagation_tick(self._virus, nb_ticks=100)
+            self.update_city_status(town)
 
         self.update_all_labels(event_message=propag_msg)
 

@@ -14,6 +14,8 @@ class City:
         """
         Initialises a city and fills its parameters.
         """
+        self.coord_x = coord_x
+        self.coord_y = coord_y
         self.pop = population
         a = []
         if infected : a = [1/self.pop] 
