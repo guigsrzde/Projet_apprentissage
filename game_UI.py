@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 
 
 class Menu(QWidget):
-    def __init__(self, filename, maxturns=10):
+    def __init__(self, filename, maxturns=20):
         """
         Constructor that instantly launches the game when called.
         """
@@ -234,6 +234,7 @@ class Menu(QWidget):
                 ax[row][col].plot(town.infected, label = 'infected')
                 ax[row][col].plot(town.recovered, label = 'recovered')
                 ax[row][col].plot(town.dead, label = 'dead')
+                ax[row][col].legend()
                 ax[row][col].set_title(town.name)
                 ax[row][col].grid()
             plt.show()

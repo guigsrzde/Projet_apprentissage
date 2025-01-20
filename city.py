@@ -77,7 +77,7 @@ class City:
         model of propagation to new cities.
         """
         p = randint(0,self.pop)
-        if p<= self.infected[-1]*self.pop and (not town.is_infected()):
+        if p<= self.infected[-1]*self.healthy[-1]*self.pop and (not town.is_infected()):
             town.infect()
             return True
         return False
