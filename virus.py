@@ -6,7 +6,7 @@ class Virus:
         self.symptoms = {}  # Dictionary of active symptoms
         self.mutation_points = mutation_points # evolution points (game currency)
 
-        self.resistance = 0  # recovery value (virus only)
+        #self.resistance = 0  # recovery value (virus only)
         self.healing_rate = 0 # SIRD Model coeff
 
         self.propagation = 0 # propagation value (virus only)
@@ -20,9 +20,9 @@ class Virus:
         self.infection_duration = 30 # SIRD Model coeff
         
         
-        cough = Symptom("Cough", recov_rate_impact=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
+        cough = Symptom("Cough", recov_rate_impact=2, mutation_cost=3, propagation_impact=5, mortality_impact=0)
         fever = Symptom("Fever", recov_rate_impact=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
-        death = Symptom("Death", recov_rate_impact=10, mutation_cost=8, propagation_impact=0, mortality_impact=5)
+        death = Symptom("Death", recov_rate_impact=5, mutation_cost=8, propagation_impact=0, mortality_impact=5)
         
         # Add symptoms
         self.add_symptom(cough)  
@@ -59,6 +59,11 @@ class Virus:
         self.mutation_points -= 1
         self.update_params()
 
+    def upgrade_resistance(self):
+        self.infection_duration += 1   
+        self.mutation_points -= 1
+        self.update_params()
+
     def update_params(self):
         """
         Updates the constants for the SIRD model we used
@@ -68,7 +73,7 @@ class Virus:
         self.mortality_symptoms = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys()])
 
         self.transmission_rate = 0.3*th((self.propagation+self.propagation_symptoms)/3)
-        self.infection_duration = 50*th((self.length_infection_symptoms+self.resistance)/3)
+        self.healing_rate = 1/(50*th((self.length_infection_symptoms+self.infection_duration)/3))
         self.mortality_rate = 0.1*th(self.mortality_symptoms/3)
         return
 
@@ -83,7 +88,7 @@ class Virus:
         """
         Returns an str that describes the global attributes of the virus. Can be used to show to the user or for debug
         """
-        message = f"Virus {self.name}: Propagation={self.propagation}, Resistance={self.resistance}, Mutation points={self.mutation_points}"
+        message = f"Virus {self.name}: Propagation={self.propagation}, Infection Duration={self.infection_duration}, Mutation points={self.mutation_points}"
         # print(message)
         return message
 

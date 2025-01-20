@@ -74,7 +74,7 @@ class Menu(QWidget):
 
         # Add buttons at the bottom
         self._add_button("Propagation", n_row, 0, self._click_propagation)
-        self._add_button("Resistance", n_row, 1, self._click_resistance)
+        self._add_button("Infection Duration", n_row, 1, self._click_resistance)
         button_row=0
         for sympt in self._virus.symptoms.keys():
             self._add_button_value(f"Symptom: {self._virus.symptoms[sympt].name}", n_row, 2 + button_row, self._click_symptom, sympt)
@@ -99,7 +99,7 @@ class Menu(QWidget):
         self._info_labels['upgrade_points'] = QLabel(f"Points available to upgrade virus: {self._virus.mutation_points}")
         self._info_labels['virus_name'] = QLabel(f"Virus name: {self._virus.name}")
         self._info_labels['virus_propagation'] = QLabel(f"Virus Propagation factor: {self._virus.propagation}")
-        self._info_labels['virus_resistance'] = QLabel(f"Virus Resistance factor: {self._virus.resistance}")
+        self._info_labels['virus_resistance'] = QLabel(f"Virus Infection Duration factor: {self._virus.infection_duration}")
         for symptom in self._virus.symptoms.keys():
             name = str(self._virus.symptoms[symptom].name)
             self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {self._virus.symptoms[symptom].level}")
@@ -152,7 +152,7 @@ class Menu(QWidget):
         self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         self._info_labels['virus_name'].setText(f"Virus name: {self._virus.name}")
         self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation}")
-        self._info_labels['virus_resistance'].setText(f"Virus Resistance factor: {self._virus.resistance}")
+        self._info_labels['virus_resistance'].setText(f"Virus Infection Duration factor: {self._virus.resistance}")
         self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
         if err_message is not None:
             self._error_label.setText(err_message)
@@ -170,13 +170,14 @@ class Menu(QWidget):
 
     def _click_resistance(self):
         if self._virus.mutation_points > 0:
-            self._virus.resistance += 1
-            self._virus.healing_rate = 1/self._virus.resistance
+            self._virus.upgrade_resistance()
+            
+            
             self._virus.mutation_points -= 1
-            self._info_labels['virus_resistance'].setText(f"Virus Resistance factor: {self._virus.resistance}")
+            self._info_labels['virus_resistance'].setText(f"Virus Infection Duration factor: {self._virus.infection_duration}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
-            self._error_label.setText("Not enough points available to upgrade the resistance of the virus. Points required : 1")
+            self._error_label.setText("Not enough points available to upgrade the infection duration of the virus. Points required : 1")
         
         for i in range (len(self._cities)):
             town = self._cities[i]
