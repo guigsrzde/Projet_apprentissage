@@ -1,7 +1,7 @@
 from numpy import tanh as th
 
 class Virus:
-    def __init__(self, name, mutation_points=10):
+    def __init__(self, name, mutation_points=30):
         self.name = name
         self.symptoms = {}  # Dictionary of active symptoms
         self.mutation_points = mutation_points # evolution points (game currency)
@@ -19,16 +19,16 @@ class Virus:
         self.length_infection_symptoms = 1 # length of infection value (symptoms only)
         self.infection_duration = 30 # SIRD Model coeff
         
-        """
-        cough = Symptom("Cough", seriousness=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
-        fever = Symptom("Fever", seriousness=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
-        death = Symptom("Death", seriousness=10, mutation_cost=8, propagation_impact=0, mortality_impact=5)
+        
+        cough = Symptom("Cough", recov_rate_impact=2, mutation_cost=3, propagation_impact=1, mortality_impact=0)
+        fever = Symptom("Fever", recov_rate_impact=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
+        death = Symptom("Death", recov_rate_impact=10, mutation_cost=8, propagation_impact=0, mortality_impact=5)
         
         # Add symptoms
         self.add_symptom(cough)  
         self.add_symptom(fever)  
         self.add_symptom(death)  
-        """
+        
     
     def add_symptom(self, symptom):
         """
@@ -49,7 +49,7 @@ class Virus:
         if self.mutation_points >= self.symptoms[symptom_name].mutation_cost:
             new_level = self.symptoms[symptom_name].upgrade()
             self.update_params()
-            self.mutation_points -=1
+            self.mutation_points -= self.symptoms[symptom_name].mutation_cost
             return new_level
         error_msg = "Not enough mutation points to upgrade this symptom"
         return error_msg
@@ -102,9 +102,9 @@ class Symptom:
         self.propagation_impact0 = propagation_impact
         self.mortality_impact0 = mortality_impact
 
-        self.recov_rate_impact = recov_rate_impact
-        self.propagation_impact = propagation_impact
-        self.mortality_impact = mortality_impact
+        self.recov_rate_impact = 0
+        self.propagation_impact = 0
+        self.mortality_impact = 0
         
 
     def show_details(self):

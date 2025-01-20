@@ -75,8 +75,10 @@ class Menu(QWidget):
         # Add buttons at the bottom
         self._add_button("Propagation", n_row, 0, self._click_propagation)
         self._add_button("Resistance", n_row, 1, self._click_resistance)
-        for i in range(len(self._virus.symptoms)):
-            self._add_button_value(f"Symptom: {self._virus.symptoms[i].name}", n_row, 2 + i, self._click_symptom, i)
+        button_row=0
+        for sympt in self._virus.symptoms.keys():
+            self._add_button_value(f"Symptom: {self._virus.symptoms[sympt].name}", n_row, 2 + button_row, self._click_symptom, sympt)
+            button_row+=1
 
         # Add buttons for each city on the right
         for i in range(n_row):
@@ -98,9 +100,9 @@ class Menu(QWidget):
         self._info_labels['virus_name'] = QLabel(f"Virus name: {self._virus.name}")
         self._info_labels['virus_propagation'] = QLabel(f"Virus Propagation factor: {self._virus.propagation}")
         self._info_labels['virus_resistance'] = QLabel(f"Virus Resistance factor: {self._virus.resistance}")
-        for symptom in self._virus.symptoms:
-            name = str(symptom.name)
-            self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {symptom.level}")
+        for symptom in self._virus.symptoms.keys():
+            name = str(self._virus.symptoms[symptom].name)
+            self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {self._virus.symptoms[symptom].level}")
         self._info_labels['selected_city'] = QLabel(f"Selected city: {town.name}")
         self._info_labels['city_population'] = QLabel(f"Initial Population: {town.pop}")
         self._info_labels['city_infected'] = QLabel(f"Infected: {int(town.infected[-1]*town.pop+0.1)} people, {int(town.infected[-1])*100/town.pop}%")
@@ -178,13 +180,13 @@ class Menu(QWidget):
             self._info_labels['city_dead'].setText(f"Dead: {town.dead[-1]}")
         
     def _click_symptom(self, index):
-        if self._virus.mutation_points > 0:
-            self._virus.symptoms[index].upgrade()
+        if self._virus.mutation_points >= self._virus.symptoms[index].mutation_cost:
+            self._virus.upgrade_symptom(index)
             symptom = self._virus.symptoms[index]
             self._info_labels[f'virus_symptoms_{str(symptom.name)}'].setText(f"Virus Symptom {str(symptom.name)} factor: {symptom.level}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
-            self._error_label.setText(f"Not enough points available to upgrade the symptom {self._virus.symptoms[index].name} of the virus.")
+            self._error_label.setText(f"Not enough points available to upgrade the symptom {self._virus.symptoms[index].name}. Points required : {self._virus.symptoms[index].mutation_cost}")
 
     def _click_city(self, index):
         """
@@ -208,7 +210,7 @@ class Menu(QWidget):
 
         for i in range (len(self._cities)):
             town = self._cities[i]
-            town.propagation_tick(self._virus, nb_ticks=30)
+            town.propagation_tick(self._virus, nb_ticks=100)
 
         self.update_all_labels(event_message=propag_msg)
 
