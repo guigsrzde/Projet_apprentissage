@@ -100,6 +100,8 @@ class Menu(QWidget):
         self._info_labels['virus_name'] = QLabel(f"Virus name: {self._virus.name}")
         self._info_labels['virus_propagation'] = QLabel(f"Virus Propagation factor: {self._virus.propagation}")
         self._info_labels['virus_resistance'] = QLabel(f"Virus Infection Duration factor: {self._virus.infection_duration}")
+        self._info_labels['virus_mortality'] = QLabel(f"Virus Mortality factor: {self._virus.mortality_rate}")
+
         for symptom in self._virus.symptoms.keys():
             name = str(self._virus.symptoms[symptom].name)
             self._info_labels[f'virus_symptoms_{name}'] = QLabel(f"Virus Symptom {name} factor: {self._virus.symptoms[symptom].level}")
@@ -150,9 +152,9 @@ class Menu(QWidget):
     def update_all_labels(self, err_message=None, event_message=None):
         self._click_city(self._selected_city)
         self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
-        self._info_labels['virus_name'].setText(f"Virus name: {self._virus.name}")
-        self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation}")
-        self._info_labels['virus_resistance'].setText(f"Virus Infection Duration factor: {self._virus.resistance}")
+        self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation + self._virus.propagation_symptoms}")
+        self._info_labels['virus_resistance'].setText(f"Virus Infection Duration factor: {self._virus.infection_duration + self._virus.length_infection_symptoms}")
+        self._info_labels['virus_mortality'].setText(f"Virus Mortality factor: {self._virus.mortality_rate}")
         self._info_labels['turn_number'].setText(f"Turn number: {self._turn}")
         if err_message is not None:
             self._error_label.setText(err_message)
@@ -170,10 +172,7 @@ class Menu(QWidget):
 
     def _click_resistance(self):
         if self._virus.mutation_points > 0:
-            self._virus.upgrade_resistance()
-            
-            
-            self._virus.mutation_points -= 1
+            self._virus.upgrade_resistance()         
             self._info_labels['virus_resistance'].setText(f"Virus Infection Duration factor: {self._virus.infection_duration}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
