@@ -6,6 +6,7 @@
 -- ajuster les pas de temps entre prop spatial eet prop temporelle
 -- ajouter evenements aleatoires (genre un pour commencer)
 - - caracteristiques differentes (param differentes) pour chaques villes -> ajouter param dans classe ville (on pourra)
+-- enlever les boutons propagation et duree dinfection
 
 
 FAIT
