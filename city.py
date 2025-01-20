@@ -91,14 +91,15 @@ class City:
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
         return
 
-def global_propagation(list_cities):
+def global_propagation(list_cities, nbticks=10):
     """
     Function that allows the virus to propagate between cities
     """
     newly_infected_cities_id = []
-    for town1 in list_cities:
-        for town2 in list_cities:
-            if(town1.propagate_to(town2)):
-                newly_infected_cities_id.append(town2.id)
+    for _ in range(nbticks):
+        for town1 in list_cities:
+            for town2 in list_cities:
+                if(town1.propagate_to(town2)):
+                    newly_infected_cities_id.append(town2.id)
     message = f"The virus has arrived to these cities: {[str(list_cities[i].name) for i in newly_infected_cities_id]}"
     return message
