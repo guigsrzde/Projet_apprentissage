@@ -3,7 +3,10 @@
 -Rediger 
 -Onglet pour acceder aux graphes
 -Historique actions
--Plot les bonnes valeurs dans le graphe
+- ajuster les pas de temps entre prop spatial eet prop temporelle
+- ajouter evenements aleatoires
+- caracteristiques differentes (param differents)n pour chaques villes -> ajouter param dans classe ville
+
 
 FAIT
 -Restructurer la classe virus+symptômes
@@ -14,3 +17,4 @@ FAIT
 -lien recovery rate-duree-d'infection-propagation
 -Mise en place de la propagation dans le jeu
 -Relier fonction propagation spatiale
+-Plot les bonnes valeurs dans le graphe
