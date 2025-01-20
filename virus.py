@@ -67,9 +67,9 @@ class Virus:
         self.length_infection_symptoms = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys()])
         self.mortality_symptoms = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys()])
 
-        self.transmission_rate = 0.2*th((self.propagation+self.propagation_symptoms)/3)
-        self.infection_duration = 30*th((self.length_infection_symptoms+self.resistance)/3)
-        self.mortality_rate = 0.2*th(self.mortality_symptoms/3)
+        self.transmission_rate = 0.3*th((self.propagation+self.propagation_symptoms)/3)
+        self.infection_duration = 50*th((self.length_infection_symptoms+self.resistance)/3)
+        self.mortality_rate = 0.1*th(self.mortality_symptoms/3)
         return
 
 
