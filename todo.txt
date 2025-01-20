@@ -1,11 +1,11 @@
--Débloquer les symptomes
+-- Débloquer les symptomes
 -Enregistrer modifications
 -Rediger 
 -Onglet pour acceder aux graphes
 -Historique actions
-- ajuster les pas de temps entre prop spatial eet prop temporelle
-- ajouter evenements aleatoires
-- caracteristiques differentes (param differents)n pour chaques villes -> ajouter param dans classe ville
+-- ajuster les pas de temps entre prop spatial eet prop temporelle
+-- ajouter evenements aleatoires (genre un pour commencer)
+- - caracteristiques differentes (param differentes) pour chaques villes -> ajouter param dans classe ville (on pourra)
 
 
 FAIT
