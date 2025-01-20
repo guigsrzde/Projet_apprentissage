@@ -162,7 +162,7 @@ class Menu(QWidget):
             self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {self._virus.propagation}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
-            self._error_label.setText("Not enough points available to upgrade the propagation of the virus.")
+            self._error_label.setText("Not enough points available to upgrade the propagation of the virus. Points required : 1")
 
     def _click_resistance(self):
         if self._virus.mutation_points > 0:
@@ -172,7 +172,7 @@ class Menu(QWidget):
             self._info_labels['virus_resistance'].setText(f"Virus Resistance factor: {self._virus.resistance}")
             self._info_labels['upgrade_points'].setText(f"Points available to upgrade virus: {self._virus.mutation_points}")
         else:
-            self._error_label.setText("Not enough points available to upgrade the resistance of the virus.")
+            self._error_label.setText("Not enough points available to upgrade the resistance of the virus. Points required : 1")
         
         for i in range (len(self._cities)):
             town = self._cities[i]
