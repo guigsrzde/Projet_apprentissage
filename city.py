@@ -1,5 +1,5 @@
 from random import randint
-from modele_propgation import SIRD_model
+from modele_propagation import SIRD_model
 import numpy as np
 
 # Parameters
@@ -91,7 +91,7 @@ class City:
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
         return
 
-def global_propagation(list_cities, nbticks=10):
+def global_propagation(list_cities, nbticks=5):
     """
     Function that allows the virus to propagate between cities
     """

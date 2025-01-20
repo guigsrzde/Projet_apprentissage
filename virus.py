@@ -10,19 +10,17 @@ class Virus:
         self.healing_rate = 0 # SIRD Model coeff
 
         self.propagation = 0 # propagation value (virus only)
-        self.propagation_symptoms = 0  # propagation value (symptoms only)
         self.transmission_rate = 0 # SIRD Model coeff
 
         self.mortality_symptoms = 0 # mortality value (symptoms only)
         self.mortality_rate = 0 # SIRD Model coeff
 
-        self.length_infection_symptoms = 1 # length of infection value (symptoms only)
         self.infection_duration = 30 # SIRD Model coeff
         
         
-        cough = Symptom("Cough", recov_rate_impact=2, mutation_cost=3, propagation_impact=5, mortality_impact=0)
-        fever = Symptom("Fever", recov_rate_impact=3, mutation_cost=5, propagation_impact=2, mortality_impact=1)
-        death = Symptom("Death", recov_rate_impact=5, mutation_cost=8, propagation_impact=0, mortality_impact=5)
+        cough = Symptom("Cough", duration_impact=-1, mutation_cost=3, propagation_impact=5, mortality_impact=0)
+        fever = Symptom("Fever", duration_impact=-2, mutation_cost=5, propagation_impact=2, mortality_impact=1)
+        death = Symptom("Death", duration_impact=-3, mutation_cost=8, propagation_impact=0, mortality_impact=5)
         
         # Add symptoms
         self.add_symptom(cough)  
@@ -68,12 +66,12 @@ class Virus:
         """
         Updates the constants for the SIRD model we used
         """
-        self.propagation_symptoms = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys()])
-        self.length_infection_symptoms = sum([self.symptoms[name].recov_rate_impact for name in self.symptoms.keys()])
+        self.propagation = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys()])
+        self.length_infection = self.infection_duration + sum([self.symptoms[name].duration_impact for name in self.symptoms.keys()])
         self.mortality_symptoms = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys()])
 
-        self.transmission_rate = 0.3*th((self.propagation+self.propagation_symptoms)/3)
-        self.healing_rate = 1/(50*th((self.length_infection_symptoms+self.infection_duration)/3))
+        self.transmission_rate = 0.3*th((self.propagation)/3)
+        self.healing_rate = 1/(50*th((self.length_infection)/3))
         self.mortality_rate = 0.1*th(self.mortality_symptoms/3)
         return
 
@@ -95,7 +93,7 @@ class Virus:
 
 
 class Symptom:
-    def __init__(self, name, mutation_cost, recov_rate_impact, propagation_impact, mortality_impact):
+    def __init__(self, name, mutation_cost, duration_impact, propagation_impact, mortality_impact):
         """
         Initializes new symptoms to add to the virus
         """
@@ -103,11 +101,11 @@ class Symptom:
         self.mutation_cost = mutation_cost
         self.level = 0
 
-        self.recov_rate_impact0 = recov_rate_impact
+        self.duration_impact0 = duration_impact
         self.propagation_impact0 = propagation_impact
         self.mortality_impact0 = mortality_impact
 
-        self.recov_rate_impact = 0
+        self.duration_impact = 0
         self.propagation_impact = 0
         self.mortality_impact = 0
         
@@ -129,7 +127,8 @@ class Symptom:
         self.level +=1
         self.mortality_impact += self.mortality_impact0
         self.propagation_impact += self.propagation_impact0
-        self.recov_rate_impact += self.recov_rate_impact0
+        if self.duration_impact > self.duration_impact0 :
+            self.duration_impact += self.duration_impact0
         return self.level
 
 
