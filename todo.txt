@@ -1,6 +1,6 @@
 -- Débloquer les symptomes
 -Enregistrer modifications
--Rediger 
+-Rediger le Readme
 -Historique actions
 -- ajuster les pas de temps entre prop spatial et prop temporelle
 -- ajouter evenements aleatoires (genre un pour commencer)
