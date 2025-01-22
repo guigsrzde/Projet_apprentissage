@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel, QVBoxLayout, QMainWindow, QTabWidget
+from PyQt5.QtWidgets import QMainWindow, QTabWidget
 from PyQt5.QtCore import Qt
 from main_tab import MainTab
 from graph_tab import GraphTab

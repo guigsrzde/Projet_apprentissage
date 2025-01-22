@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout
 from PyQt5.QtCore import Qt
 from matplotlib import pyplot as plt
 from gamedata import GameData

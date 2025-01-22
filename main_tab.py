@@ -1,8 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel, QVBoxLayout, QMainWindow, QTabWidget
+from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLabel, QVBoxLayout
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt
-import parser
-from matplotlib import pyplot as plt
 from gamedata import GameData
 
 class MainTab(QWidget):
@@ -140,6 +138,8 @@ class MainTab(QWidget):
         self._create_info_boxes()
         self._other_messages_box()
         self.update_all_labels()
+        for town in self._data.cities:
+            self.update_city_status(town)
         return
     
     def update_all_labels(self):
@@ -165,6 +165,9 @@ class MainTab(QWidget):
         radius = 10  
         painter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius)
         painter.end()
+        self.image_label.setPixmap(self.pixmap)
+        self.update()
+        return
 
     def _click_symptom(self, index):
         self._data.click_symptom(index)
@@ -191,8 +194,6 @@ class MainTab(QWidget):
         """
         self._data.click_turn()
         self.update_all_labels()
-        for town in self._data.cities:
-            self.update_city_status(town)
         if self._data.turn > self._data.maxturns:
             self.parent().close()
         return
