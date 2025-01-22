@@ -15,8 +15,6 @@ class GameData():
         self.selected_city = 0
         self.messages = [[""] for _ in range(self.maxturns+1)]
         self.messages[0].append("Game starts now.")
-        self.messages[-1].append("This is your last turn! Clicking next turn will end the game and close the app")
-    
     def click_turn(self):
         self.turn += 1
         propag_msg = global_propagation(self.cities)
@@ -30,7 +28,8 @@ class GameData():
             self.messages[self.turn].append(propag_msg)
 
         if self.turn == self.maxturns:
-            self.messages[-1].append("This is your last turn!")
+            self.messages[-1].append("This is your last turn! Clicking next turn will end the game and close the app")
+    
         return
     
     def click_symptom(self, index):

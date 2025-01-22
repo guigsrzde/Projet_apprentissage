@@ -139,6 +139,7 @@ class MainTab(QWidget):
         self._add_all_buttons()
         self._create_info_boxes()
         self._other_messages_box()
+        self.update_all_labels()
         return
     
     def update_all_labels(self):

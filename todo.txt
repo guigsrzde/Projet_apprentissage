@@ -1,9 +1,8 @@
 -- Débloquer les symptomes
 -Enregistrer modifications
 -Rediger 
--Onglet pour acceder aux graphes
 -Historique actions
--- ajuster les pas de temps entre prop spatial eet prop temporelle
+-- ajuster les pas de temps entre prop spatial et prop temporelle
 -- ajouter evenements aleatoires (genre un pour commencer)
 - - caracteristiques differentes (param differentes) pour chaques villes -> ajouter param dans classe ville (on pourra)
 -- remetre un bouton mutation, avec des surprises ? genre ca augmente la resistance (mais coute cher) 
@@ -23,3 +22,4 @@ FAIT
 -Relier fonction propagation spatiale
 -Plot les bonnes valeurs dans le graphe
 -- enlever les boutons propagation et duree dinfection
+-Onglet pour acceder aux graphes

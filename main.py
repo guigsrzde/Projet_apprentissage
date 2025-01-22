@@ -1,9 +1,9 @@
-import game_UI
+from global_UI import Game
 import sys
 from PyQt5.QtWidgets import QApplication
 
 
 app = QApplication(sys.argv)
-game = game_UI.Menu("royaume_uni")
+game = Game()
 game.show()
 sys.exit(app.exec_())
