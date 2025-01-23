@@ -4,7 +4,7 @@ from main_tab import MainTab
 from graph_tab import GraphTab
 from gamedata import GameData
 
-class Game(QMainWindow):
+class Game(QMainWindow): 
     def __init__(self, filename = "royaume_uni", maxturns = 20):
         """
         Constructor that instantly launches the game when called.
@@ -22,6 +22,9 @@ class Game(QMainWindow):
         self.tab2 = GraphTab(self._data)
         self.tabs.addTab(self.tab1, "Main Menu")
         self.tabs.addTab(self.tab2, "Detailed Infographics")
+    
+    def update(self):
+        pass
 
 
 
