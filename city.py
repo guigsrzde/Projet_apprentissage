@@ -79,7 +79,7 @@ class City:
         model of propagation to new cities.
         """
         p = randint(0,self.pop)
-        if p<= self.infected[-1]*self.healthy[-1]*self.pop and (not town.is_infected()):
+        if p<= self.infected[-1]*self.healthy[-1]*self.pop/self.distance(town) and (not town.is_infected()):
             town.infect()
             return True
         return False
@@ -93,7 +93,7 @@ class City:
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
         return
 
-def global_propagation(list_cities, nbticks=5):
+def global_propagation(list_cities, nbticks=100):
     """
     Function that allows the virus to propagate between cities
     """

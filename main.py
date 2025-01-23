@@ -1,9 +1,9 @@
-from global_UI import Game
-import sys
 from PyQt5.QtWidgets import QApplication
+from global_UI import Game
+from sys import exit, argv
 
 
-app = QApplication(sys.argv)
+app = QApplication(argv)
 game = Game()
 game.show()
-sys.exit(app.exec_())
+exit(app.exec_())
