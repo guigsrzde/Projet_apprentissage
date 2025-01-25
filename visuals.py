@@ -14,13 +14,13 @@ class GameMap:
 
         self.image_label.setScaledContents(True)  # Easy rescale
 
-    def attach_to_label(self, label: QLabel):
-        """
-        Attaches the map pixmap to a QLabel for display.
-        :param label: QLabel instance where the map will be rendered.
-        """
-        label.setPixmap(self.pixmap)
-        label.setScaledContents(True)  # Allow scaling based on widget size.
+    # def attach_to_label(self, label: QLabel):
+    #     """
+    #     Attaches the map pixmap to a QLabel for display.
+    #     :param label: QLabel instance where the map will be rendered.
+    #     """
+    #     label.setPixmap(self.pixmap)
+    #     label.setScaledContents(True)  # Allow scaling based on widget size.
 
     def update_city_status(self, city):
         """

@@ -13,6 +13,7 @@ class MainTab(QWidget):
 
         # Views
         self.map_view = GameMap(self._game_map, self)
+        # self.map_view.attach_to_label(self.map_view.image_label)
         self.right_info_view = RightColumnInformations(self._data)
         self.bottom_info_view = BottomRowInformations()
 
@@ -116,5 +117,7 @@ class MainTab(QWidget):
         """
         self._data.click_turn()
         self.update_all_views()
+        for town in self._data.cities:
+            self.map_view.update_city_status(town)
         if self._data.turn > self._data.maxturns:
             self.parent().close()
