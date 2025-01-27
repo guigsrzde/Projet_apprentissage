@@ -14,8 +14,10 @@ class GameData():
         self.turn = 0
         self.maxturns = maxturns
         self.selected_city = 0
-        self.messages = [[""] for _ in range(self.maxturns+1)]
-        self.messages[0].append("Game starts now.")
+        self.messages_err = [[""] for _ in range(self.maxturns+1)]
+        self.messages_evt = [[""] for _ in range(self.maxturns+1)]
+        self.messages_err[0].append("Game starts now.")
+        self.messages_evt[0].append("You will be warned of unexpected events here.")
         self.vaccination_time = random.randint(5,18)
         self.vaccination_prop = 0.2
 
@@ -30,10 +32,11 @@ class GameData():
             town.propagation_tick(self.virus, nb_ticks=100)
 
         if self.turn < self.maxturns:
-            self.messages[self.turn].append(propag_msg + " ; " + vaccine_msg)
+            self.messages_err[self.turn].append(propag_msg)
+            self.messages_evt[self.turn].append(vaccine_msg)
 
         if self.turn == self.maxturns:
-            self.messages[-1].append("This is your last turn! Clicking next turn will end the game and close the app")
+            self.messages_err[-1].append("This is your last turn! Clicking next turn will end the game and close the app")
     
         return
     
@@ -43,7 +46,7 @@ class GameData():
                 self.virus.propagation += self.virus.symptoms[index].propagation_impact
                 self.virus.infection_duration += self.virus.symptoms[index].duration_impact
             else:
-                self.messages[self.turn].append(f"Not enough points available to upgrade the symptom {self.virus.symptoms[index].name}. Points required : {self.virus.symptoms[index].mutation_cost}")
+                self.messages_err[self.turn].append(f"Not enough points available to upgrade the symptom {self.virus.symptoms[index].name}. Points required : {self.virus.symptoms[index].mutation_cost}")
             return
 
     def vaccine(self):

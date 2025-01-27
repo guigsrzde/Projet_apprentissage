@@ -104,12 +104,13 @@ class BottomRowInformations:
         Handles the display of bottom row messages (e.g., errors, warnings).
         """
         self._error_label = QLabel()
-        self._unexpected_event_label = QLabel("You will be warned of unexpected events here.")
+        self._unexpected_event_label = QLabel()
 
-    def update_labels(self, data):
+    def update_labels(self, data:GameData):
         """
         Updates the displayed messages based on the current turn.
         :param data: GameData object containing overall game state.
         """
         if data.turn < data.maxturns + 1:
-            self._error_label.setText(data.messages[data.turn][-1])
+            self._error_label.setText(data.messages_err[data.turn][-1])
+            self._unexpected_event_label.setText(data.messages_evt[data.turn][-1])
