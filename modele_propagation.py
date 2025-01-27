@@ -12,32 +12,6 @@ N = int(T / dt)
 # Initialization of arrays
 t = np.linspace(0, T, N)
 
-# # Initial conditions
-# healthy[0] = 0.99  # Initial proportion of the population susceptible
-# infected[0] = 0.01  # Initial proportion of the population infected
-# recovered[0] = 0.0   # Initial proportion of the population recovered
-# deceased[0] = 0.0   # Initial proportion of the population deceased
-    
-# def SIRD_model(S, I, R, D, virus, n):
-
-#     # Updated parameters
-#     beta = virus.transmission_rate
-#     gamma = virus.healing_rate
-#     mu = virus.mortality_rate
-
-#     # Simulation avec la méthode d'Euler
-#     dS = -beta * S[n-1] * I[n-1] * dt
-#     dI = (beta * S[n-1] * I[n-1] - gamma * I[n-1] - mu * I[n-1]) * dt
-#     dR = gamma * I[n-1] * dt
-#     dD = mu * I[n-1] * dt
-
-#     S[n] = S[n-1] + dS
-#     I[n] = I[n-1] + dI
-#     R[n] = R[n-1] + dR
-#     D[n] = D[n-1] + dD
-       
-#     return S[n], I[n], R[n], D[n]
-
 def SIRD_model(S, I, R, D, virus):
 
     # Updated parameters
