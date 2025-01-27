@@ -27,7 +27,12 @@ class GameMap():
         """
         painter = QPainter(self.pixmap)
         x, y = city.coord_x, city.coord_y
-        color = QColor("red") if city.is_infected() else QColor("green")
+        if city.is_infected() and ((int(city.infected[-1]) * 100 / city.pop) > 0.0):
+            color = QColor("red")
+        elif not city.is_infected():
+            color = QColor("green")
+        elif city.is_infected() and ((int(city.infected[-1]) * 100 / city.pop) == 0.0):
+            color = QColor("red")        
         pen = QPen(color, 5, Qt.SolidLine)
         painter.setPen(pen)
         radius = 10

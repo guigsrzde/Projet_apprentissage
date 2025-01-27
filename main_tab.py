@@ -97,6 +97,7 @@ class MainTab(QWidget):
             self.map.update_city_status(city_name)
         self.right_info_view.update_labels(self._data)
         self.bottom_info_view.update_labels(self._data)
+        
 
     def _click_city(self, index):
         """
