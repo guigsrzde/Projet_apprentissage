@@ -3,24 +3,22 @@ from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
 from PyQt5.QtCore import Qt
 from gamedata import GameData
 
-class GameMap:
+class GameMap():
     def __init__(self, filename, parent_widget):
+        self.layout = QVBoxLayout()
         self.image_label = QLabel(parent_widget)
-        self.pixmap = QPixmap((filename) + "/map.png")
+        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setScaledContents(True)
+        self.pixmap = QPixmap(filename + "/map.png")
         self.image_label.setPixmap(self.pixmap)
+        self.layout.addWidget(self.image_label)
+        container = QWidget()
+        container.setLayout(self.layout)
+        self.image = container
+
 
         self._imheight = self.pixmap.size().height()
         self._imwidth = self.pixmap.size().width()
-
-        self.image_label.setScaledContents(True)  # Easy rescale
-
-    # def attach_to_label(self, label: QLabel):
-    #     """
-    #     Attaches the map pixmap to a QLabel for display.
-    #     :param label: QLabel instance where the map will be rendered.
-    #     """
-    #     label.setPixmap(self.pixmap)
-    #     label.setScaledContents(True)  # Allow scaling based on widget size.
 
     def update_city_status(self, city):
         """
@@ -34,6 +32,8 @@ class GameMap:
         painter.setPen(pen)
         radius = 10
         painter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius)
+        self.image_label.setPixmap(self.pixmap)
+        self.image_label.update()
         painter.end()
 
 class RightColumnInformations:
