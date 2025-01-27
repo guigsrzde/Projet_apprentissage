@@ -12,7 +12,8 @@ class MainTab(QWidget):
         self._data = complete_data
 
         # Views
-        self.map_view = GameMap(self._game_map, self)
+        self.map = GameMap(filename, self)
+        self.map.image_label.setScaledContents(True)
         # self.map_view.attach_to_label(self.map_view.image_label)
         self.right_info_view = RightColumnInformations(self._data)
         self.bottom_info_view = BottomRowInformations()
@@ -74,7 +75,7 @@ class MainTab(QWidget):
         self.setLayout(self._grid)
 
         # Add the map to the layout
-        self._grid.addWidget(self.map_view.image_label, 0, 0, self._data.ncities, nsymptoms, alignment=Qt.AlignCenter)
+        self._grid.addWidget(self.map.image, 0, 0, self._data.ncities, nsymptoms)
 
         # Add all buttons to the layout
         self._add_all_buttons()
@@ -93,7 +94,7 @@ class MainTab(QWidget):
         Update all views based on the current state of the game data.
         """
         for city_name in self._data.cities:
-            self.map_view.update_city_status(city_name)
+            self.map.update_city_status(city_name)
         self.right_info_view.update_labels(self._data)
         self.bottom_info_view.update_labels(self._data)
 
@@ -118,6 +119,6 @@ class MainTab(QWidget):
         self._data.click_turn()
         self.update_all_views()
         for town in self._data.cities:
-            self.map_view.update_city_status(town)
+            self.map.update_city_status(town)
         if self._data.turn > self._data.maxturns:
             self.parent().close()
