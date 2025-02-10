@@ -1,15 +1,9 @@
 -- Débloquer les symptomes
 -Enregistrer modifications
--Rediger le Readme
 -Historique actions
--- ajuster les pas de temps entre prop spatial et prop temporelle
--- ajouter evenements aleatoires (genre un pour commencer)
 - - caracteristiques differentes (param differentes) pour chaques villes -> ajouter param dans classe ville (on pourra)
 -- remetre un bouton mutation, avec des surprises ? genre ca augmente la resistance (mais coute cher) 
 quand les gens guerissent trop vite, et parfois ca fait un truc aleatoire pour ou contre nous
-
-
-
 
 FAIT
 -Restructurer la classe virus+symptômes
@@ -23,3 +17,6 @@ FAIT
 -Plot les bonnes valeurs dans le graphe
 -- enlever les boutons propagation et duree dinfection
 -Onglet pour acceder aux graphes
+-Rediger le Readme
+-- ajuster les pas de temps entre prop spatial et prop temporelle
+-- ajouter evenements aleatoires (genre un pour commencer)

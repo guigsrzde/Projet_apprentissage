@@ -2,7 +2,7 @@
 
     ## Description
 
-This project is a serious game simulating the spread of a virus across different cities. The player can introduce the virus into a city and then mutate it in an attempt to infect and kill as many people as possible.
+This project is a serious game simulating the spread of a virus across different cities. The player can introduce the virus into a city and then mutate it in an attempt to infect and kill as many people as possible. 
 
     ## Installation
 
@@ -24,7 +24,7 @@ pip install -r requirements.txt
 '''
 
     ## Usage
-    
+
 To launch the simulation, run:
 
 '''bash
