@@ -26,10 +26,11 @@ class GameData():
         vaccine_msg = self.vaccine()
         propag_msg = global_propagation(self.cities) 
         self.virus.mutation_points += 2
+        
 
         for i in range (self.ncities):
             town = self.cities[i]
-            town.propagation_tick(self.virus, nb_ticks=100)
+            town.propagation_tick(self.virus, nb_ticks=100,timeupdate=(self.turn!=1))
 
         if self.turn < self.maxturns:
             self.messages_err[self.turn].append(propag_msg)

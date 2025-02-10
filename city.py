@@ -1,6 +1,7 @@
 from random import randint
 from modele_propagation import SIRD_model
 import numpy as np
+from math import sqrt
 
 # Parameters
 T = 365  # Total time in days
@@ -29,6 +30,8 @@ class City:
         self.y = coord_y
         self.name = name # string
         self.id = id # int
+
+        self.disease_inertia = 1 #determines how fast time should go
     
     @classmethod
     def random(cls, max_x, max_y, id):
@@ -84,13 +87,26 @@ class City:
             return True
         return False
     
-    def propagation_tick(self, disease, nb_ticks):
+    def update_inertia(self, time1=0, time2=0):
+        """
+        computes the inertia of the virus between two instants of the game
+        """
+        norm_derivative = sqrt((self.healthy[time2]-self.healthy[time1])**2+(self.infected[time2]-self.infected[time1])**2
+                               +(self.dead[time2]-self.dead[time1])**2 + (self.recovered[time2]-self.recovered[time1])**2)
+        #we always have at least 2 values in the lists because of the initialisation + 1 loop, value between 0 and 2
+        self.disease_inertia = max(min(1000,10*norm_derivative/(0.3-norm_derivative)),1)
+        return
+    
+    def propagation_tick(self, disease, nb_ticks, timeupdate=True):
         """
         Implements one time tick of propagation in our model with Euler's method
         """
+        newdt = dt/self.disease_inertia
         for _ in range(nb_ticks):
-            h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, disease)
+            h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, disease, dt = newdt)
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
+            if timeupdate: 
+                self.update_inertia(-1,-1-nb_ticks)
         return
 
 def global_propagation(list_cities, nbticks=10):

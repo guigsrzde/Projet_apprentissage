@@ -12,7 +12,7 @@ N = int(T / dt)
 # Initialization of arrays
 t = np.linspace(0, T, N)
 
-def SIRD_model(S, I, R, D, virus):
+def SIRD_model(S, I, R, D, virus, dt = 0.1):
 
     # Updated parameters
     beta = virus.transmission_rate
