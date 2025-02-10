@@ -19,7 +19,6 @@ class GraphTab(QWidget):
         
         # Store the data
         self._data = complete_data
-        self.cities = 
         
         # Initial plot
         self.update_plot()

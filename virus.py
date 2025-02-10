@@ -15,11 +15,11 @@ class Virus:
         self.mortality_symptoms = 0 # mortality value (symptoms only)
         self.mortality_rate = 0 # SIRD Model coeff
 
-        self.infection_duration = 30 # SIRD Model coeff
+        self.infection_duration = 40 # SIRD Model coeff
         
         
-        cough = Symptom("Cough", duration_impact=-1, mutation_cost=3, propagation_impact=5, mortality_impact=0)
-        fever = Symptom("Fever", duration_impact=-2, mutation_cost=5, propagation_impact=2, mortality_impact=1)
+        cough = Symptom("Cough", duration_impact=-1, mutation_cost=3, propagation_impact=3, mortality_impact=0)
+        fever = Symptom("Fever", duration_impact=-1, mutation_cost=5, propagation_impact=1, mortality_impact=1)
         death = Symptom("Death", duration_impact=-3, mutation_cost=8, propagation_impact=0, mortality_impact=5)
         
         # Add symptoms
