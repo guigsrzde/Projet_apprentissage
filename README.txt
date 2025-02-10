@@ -1,1 +1,0 @@
-Ici les infos sur le jeu
