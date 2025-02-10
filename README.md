@@ -1,5 +1,9 @@
 # Serious Game - Epidemiological Simulation
 
+    ## Authors 
+
+This project has been realized in the context of the TDLOG course, as the first step of a department project around decision making taking into account uncertainties. This project has been realized by Guillaume Rouzade and Jeanne MacGregor (IMI dpt.).
+
     ## Description
 
 This project is a serious game simulating the spread of a virus across different cities. The player can introduce the virus into a city and then mutate it in an attempt to infect and kill as many people as possible. 
@@ -37,9 +41,10 @@ python main.py
 - Simulation of virus spread between cities
 - Impact of mutations and symptoms on contagion
 - Management of health interventions: vaccination
+- Data visualization on the right hand side of the window
 - Data visualization with graphs
 - Visualization of the infected cities with red circles that turn green when city is infected
-- Random events influencing epidemic dynamics
+- Random events influencing epidemic dynamics 
 
 
 # Project Structure
