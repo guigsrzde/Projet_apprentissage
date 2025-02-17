@@ -8,10 +8,6 @@ class GraphTab(QWidget):
         self._grid = QGridLayout()
         self.setLayout(self._grid)
         
-        # Add Update Button
-        self.update_button = QPushButton("Update Graphs")
-        self.update_button.clicked.connect(self.update_plot)
-        self._grid.addWidget(self.update_button, 1, 0, 1, 1)
         
         # Initialize the figure and canvas
         self.graphs = Graphs()

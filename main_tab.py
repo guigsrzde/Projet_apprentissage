@@ -6,7 +6,7 @@ from visuals import GameMap, RightColumnInformations, BottomRowInformations
 
 
 class MainTab(QWidget):
-    def __init__(self, filename: str, complete_data: GameData):
+    def __init__(self, filename: str, complete_data: GameData, game_instance):
         super().__init__()
         self._game_map = filename
         self._data = complete_data
@@ -17,6 +17,8 @@ class MainTab(QWidget):
         # self.map_view.attach_to_label(self.map_view.image_label)
         self.right_info_view = RightColumnInformations(self._data)
         self.bottom_info_view = BottomRowInformations()
+
+        self.game_instance = game_instance
 
         self._build_ui()
     
@@ -98,7 +100,6 @@ class MainTab(QWidget):
         self.right_info_view.update_labels(self._data)
         self.bottom_info_view.update_labels(self._data)
         
-
     def _click_city(self, index):
         """
         Updates the info box when a new city is selected.
@@ -117,9 +118,12 @@ class MainTab(QWidget):
         """
         Increments the turn number and updates the game state.
         """
+        if self.game_instance:
+            self.game_instance.update()
+        if self._data.turn > self._data.maxturns:
+            return
         self._data.click_turn()
         self.update_all_views()
         for town in self._data.cities:
             self.map.update_city_status(town)
-        if self._data.turn > self._data.maxturns:
-            self.parent().close()
+        

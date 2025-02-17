@@ -18,13 +18,15 @@ class Game(QMainWindow):
     def _build_ui(self):
         self.tabs = QTabWidget()
         self.setCentralWidget(self.tabs)
-        self.tab1 = MainTab(self.filename, self._data)
+        self.tab1 = MainTab(self.filename, self._data, self)
         self.tab2 = GraphTab(self._data)
         self.tabs.addTab(self.tab1, "Main Menu")
         self.tabs.addTab(self.tab2, "Detailed Infographics")
     
     def update(self):
-        pass
+        self.tab1.update_all_views()
+        self.tab2.update_plot()
+        return
 
 
 
