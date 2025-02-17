@@ -76,7 +76,7 @@ class City:
         """
         if self.is_infected()==False:
             self.infected[-1] = 1/self.pop
-            self.healthy[-1] = 1 - self.infected[-1]
+            self.healthy[-1] = 1 - (self.infected[-1] + self.recovered[-1] + self.dead[-1])
         return
     
     def propagate_to(self, town):
@@ -104,11 +104,11 @@ class City:
         Implements one time tick of propagation in our model with Euler's method
         """
         newdt = dt/self.disease_inertia
-        for _ in range(nb_ticks):
+        for j in range(nb_ticks):
             h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, disease, dt = newdt)
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
             if timeupdate: 
-                self.update_inertia(-1,-1-nb_ticks)
+                self.update_inertia(-1,-11)
         return
 
 def global_propagation(list_cities, nbticks=10):
