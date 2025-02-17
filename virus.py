@@ -19,12 +19,12 @@ class Virus:
         
         
         cough = Symptom("Cough", duration_impact=-1, mutation_cost=3, propagation_impact=3, mortality_impact=0)
-        fever = Symptom("Fever", duration_impact=-1, mutation_cost=5, propagation_impact=1, mortality_impact=1)
+        fatigue = Symptom("Fatigue", duration_impact=-1, mutation_cost=5, propagation_impact=-3, mortality_impact=2)
         death = Symptom("Death", duration_impact=-3, mutation_cost=8, propagation_impact=0, mortality_impact=5)
         
         # Add symptoms
         self.add_symptom(cough)  
-        self.add_symptom(fever)  
+        self.add_symptom(fatigue)  
         self.add_symptom(death)  
         
     

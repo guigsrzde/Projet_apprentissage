@@ -31,7 +31,9 @@ class City:
         self.name = name # string
         self.id = id # int
 
-        self.disease_inertia = 1 #determines how fast time should go
+        self.beta = 
+
+        self.disease_inertia = 1 # determines how fast time should go
     
     @classmethod
     def random(cls, max_x, max_y, id):
