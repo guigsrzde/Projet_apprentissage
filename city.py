@@ -31,7 +31,7 @@ class City:
         self.name = name # string
         self.id = id # int
 
-        self.beta = 
+        #self.beta = 
 
         self.disease_inertia = 1 # determines how fast time should go
     
