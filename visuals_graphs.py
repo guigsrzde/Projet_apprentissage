@@ -10,9 +10,11 @@ class Graphs():
     def update_plot(self, list_cities):
         # Clear previous plots
         self.figure.clear()
+
+        visible_cities = [town for town in list_cities if town.is_infected()]
         
         #Determine the optimal grid size
-        n = len(list_cities)
+        n = len(visible_cities)
         nrows = int(n ** (1 / 2))
         ncols = nrows
         while nrows * ncols < n:
@@ -20,7 +22,7 @@ class Graphs():
 
         ax = self.figure.subplots(nrows, ncols)
         for k in range(n):
-            town = list_cities[k]
+            town = visible_cities[k]
             row, col = k // ncols, k % ncols
             ax[row][col].plot(town.healthy, label='healthy')
             ax[row][col].plot(town.infected, label='infected')
