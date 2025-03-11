@@ -60,10 +60,6 @@ class Virus:
         self.propagation = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys()])
         self.length_infection = self.infection_duration + sum([self.symptoms[name].duration_impact for name in self.symptoms.keys()])
         self.mortality_symptoms = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys()])
-
-        self.transmission_rate = 0.3*th((self.propagation)/10)
-        self.healing_rate = 1/(50*th((self.length_infection)/10))
-        self.mortality_rate = 0.1*th(self.mortality_symptoms/10)
         return
 
 

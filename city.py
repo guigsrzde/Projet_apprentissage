@@ -113,7 +113,7 @@ class City:
         Implements one time tick of propagation in our model with Euler's method
         """
         newdt = dt/self.disease_inertia
-        for j in range(nb_ticks):
+        for _ in range(nb_ticks):
             h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, self.healing_rate, self.propagation_rate, self.mortality_rate, dt = newdt)
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
             if timeupdate: 
