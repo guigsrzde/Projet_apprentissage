@@ -105,7 +105,9 @@ class MainTab(QWidget):
         Updates the info box when a new city is selected.
         """
         self._data.selected_city = index
-        self.right_info_view.update_labels(self._data)
+        self._data.first_city_choice()
+        #self.right_info_view.update_labels(self._data)
+        self.update_all_views()
 
     def _click_symptom(self, symptom_key):
         """
@@ -118,12 +120,12 @@ class MainTab(QWidget):
         """
         Increments the turn number and updates the game state.
         """
-        if self.game_instance:
-            self.game_instance.update()
         if self._data.turn > self._data.maxturns:
             return
         self._data.click_turn()
         self.update_all_views()
         for town in self._data.cities:
             self.map.update_city_status(town)
+        if self.game_instance:
+            self.game_instance.update()
         
