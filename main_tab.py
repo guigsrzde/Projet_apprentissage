@@ -107,7 +107,8 @@ class MainTab(QWidget):
         """
         self._data.selected_city = index
         self._data.first_city_choice()
-        self.update_all_views()
+        if self.game_instance:
+            self.game_instance.update()
 
     def _click_symptom(self, symptom_key):
         """
