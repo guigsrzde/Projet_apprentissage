@@ -108,7 +108,7 @@ class City:
         self.disease_inertia = max(min(1000,10*norm_derivative/(0.3-norm_derivative)),1)
         return
     
-    def propagation_tick(self, virus, nb_ticks, timeupdate=True):
+    def propagation_tick(self, nb_ticks, timeupdate=True):
         """
         Implements one time tick of propagation in our model with Euler's method
         """
@@ -124,9 +124,9 @@ class City:
         """
         Updates the constants for the SIRD model we used
         """
-        self.transmission_rate = self.prop_fac*th((self.propagation)/10)
-        self.healing_rate = 1/(self.healing_fac*th((self.length_infection)/10))
-        self.mortality_rate = self.mortal_fac*th(self.mortality_symptoms/10)
+        self.transmission_rate = self.prop_fac*th((virus.propagation)/10)
+        self.healing_rate = 1/(self.healing_fac*th((virus.length_infection)/10))
+        self.mortality_rate = self.mortal_fac*th(virus.mortality_symptoms/10)
         return
 
 
