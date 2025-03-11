@@ -12,12 +12,12 @@ N = int(T / dt)
 # Initialization of arrays
 t = np.linspace(0, T, N)
 
-def SIRD_model(S, I, R, D, virus, dt = 0.1):
+def SIRD_model(S, I, R, D, healing_rate, transmission_rate, mortality_rate, dt = 0.1):
 
     # Updated parameters
-    beta = virus.transmission_rate
-    gamma = virus.healing_rate
-    mu = virus.mortality_rate
+    beta = transmission_rate
+    gamma = healing_rate
+    mu = mortality_rate
 
     # Simulation avec la méthode d'Euler
     dS = -beta * S[-1] * I[-1] * dt

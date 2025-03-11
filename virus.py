@@ -6,14 +6,14 @@ class Virus:
         self.symptoms = {}  # Dictionary of active symptoms
         self.mutation_points = mutation_points # evolution points (game currency)
 
-        #self.resistance = 0  # recovery value (virus only)
-        self.healing_rate = 0 # SIRD Model coeff
+        
+        #self.healing_rate = 0 # SIRD Model coeff
 
         self.propagation = 0 # propagation value (virus only)
-        self.transmission_rate = 0 # SIRD Model coeff
+        #self.transmission_rate = 0 # SIRD Model coeff
 
         self.mortality_symptoms = 0 # mortality value (symptoms only)
-        self.mortality_rate = 0 # SIRD Model coeff
+        #self.mortality_rate = 0 # SIRD Model coeff
 
         self.infection_duration = 40 # SIRD Model coeff
         
@@ -35,7 +35,7 @@ class Virus:
         if self.mutation_points >= symptom.mutation_cost:
             self.symptoms[symptom.name] = symptom
             self.mutation_points -= symptom.mutation_cost
-            self.update_params()
+            self.update_values()
         else:
             message = f"Not enough mutation points to add {symptom.name}."
             return message
@@ -46,23 +46,14 @@ class Virus:
         """
         if self.mutation_points >= self.symptoms[symptom_name].mutation_cost:
             new_level = self.symptoms[symptom_name].upgrade()
-            self.update_params()
+            self.update_values()
             self.mutation_points -= self.symptoms[symptom_name].mutation_cost
             return new_level
         error_msg = "Not enough mutation points to upgrade this symptom"
         return error_msg
     
-    def upgrade_propagation(self):
-        self.propagation += 1
-        self.mutation_points -= 1
-        self.update_params()
 
-    def upgrade_resistance(self):
-        self.infection_duration += 1   
-        self.mutation_points -= 1
-        self.update_params()
-
-    def update_params(self):
+    def update_values(self):
         """
         Updates the constants for the SIRD model we used
         """

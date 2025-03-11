@@ -2,6 +2,7 @@ from random import randint
 from modele_propagation import SIRD_model
 import numpy as np
 from math import sqrt
+from numpy import tanh as th
 
 # Parameters
 T = 365  # Total time in days
@@ -11,7 +12,7 @@ dt = 0.1  # Time step
 N = int(T / dt)
 
 class City:
-    def __init__(self, population, coord_x, coord_y, name, id, infected=False):
+    def __init__(self, population, coord_x, coord_y, name, id, healing_factor, propagation_factor, mortality_factor, infected=False):
         """
         Initialises a city and fills its parameters.
         """
@@ -26,12 +27,20 @@ class City:
         self.dead = [0]
         self.recovered = [0]
 
+        # Factors to compute the parameters
+        self.healing_fac = healing_factor
+        self.prop_fac = propagation_factor
+        self.mortal_fac = mortality_factor
+
+        # Parameters of the city 
+        self.healing_rate = 0 # SIRD Model coeff
+        self.propagation_rate = 0
+        self.mortality_rate = 0
+
         self.x = coord_x
         self.y = coord_y
         self.name = name # string
         self.id = id # int
-
-        #self.beta = 
 
         self.disease_inertia = 1 # determines how fast time should go
     
@@ -99,17 +108,27 @@ class City:
         self.disease_inertia = max(min(1000,10*norm_derivative/(0.3-norm_derivative)),1)
         return
     
-    def propagation_tick(self, disease, nb_ticks, timeupdate=True):
+    def propagation_tick(self, virus, nb_ticks, timeupdate=True):
         """
         Implements one time tick of propagation in our model with Euler's method
         """
         newdt = dt/self.disease_inertia
         for j in range(nb_ticks):
-            h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, disease, dt = newdt)
+            h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, self.healing_rate, self.propagation_rate, self.mortality_rate, dt = newdt)
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
             if timeupdate: 
                 self.update_inertia(-1,-11)
         return
+    
+    def update_params(self, virus):
+        """
+        Updates the constants for the SIRD model we used
+        """
+        self.transmission_rate = self.prop_fac*th((self.propagation)/10)
+        self.healing_rate = 1/(self.healing_fac*th((self.length_infection)/10))
+        self.mortality_rate = self.mortal_fac*th(self.mortality_symptoms/10)
+        return
+
 
 def global_propagation(list_cities, nbticks=10):
     """
