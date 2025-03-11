@@ -33,7 +33,7 @@ class GameData():
 
         for i in range (self.ncities):
             town = self.cities[i]
-            town.propagation_tick(self.virus, nb_ticks=100,timeupdate=(self.turn!=1))
+            town.propagation_tick(nb_ticks=100,timeupdate=(self.turn!=1))
 
         if self.turn < self.maxturns:
             self.messages_err[self.turn].append(propag_msg)
