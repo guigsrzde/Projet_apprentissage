@@ -34,7 +34,6 @@ class GameData():
 
         for i in range (self.ncities):
             town = self.cities[i]
-            town.update_params(self.virus)
             town.propagation_tick(nb_ticks=100,timeupdate=(self.turn!=1))
 
         if self.turn < self.maxturns:
@@ -51,6 +50,8 @@ class GameData():
                 self.virus.upgrade_symptom(index)
                 self.virus.propagation += self.virus.symptoms[index].propagation_impact
                 self.virus.infection_duration += self.virus.symptoms[index].duration_impact
+                for i in range(self.ncities):
+                    self.cities[i].update_params(self.virus)
             else:
                 self.messages_err[self.turn].append(f"Not enough points available to upgrade the symptom {self.virus.symptoms[index].name}. Points required : {self.virus.symptoms[index].mutation_cost}")
             return
