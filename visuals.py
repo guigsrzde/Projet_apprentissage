@@ -53,7 +53,7 @@ class RightColumnInformations:
         self._info_labels['virus_name'].setStyleSheet("font-weight: bold; font-size: 14px; color: green;")
         self._info_labels['virus_propagation'] = QLabel(f"Virus Propagation factor: {complete_data.virus.propagation}")
         self._info_labels['virus_resistance'] = QLabel(f"Virus Infection Duration factor: {complete_data.virus.infection_duration}")
-        self._info_labels['virus_mortality'] = QLabel(f"Virus Mortality factor: {complete_data.virus.mortality_rate}")
+        self._info_labels['virus_mortality'] = QLabel(f"Virus Mortality factor: {complete_data.virus.mortality_symptoms}")
 
         for symptom in complete_data.virus.symptoms.keys():
             name = str(complete_data.virus.symptoms[symptom].name)
@@ -87,7 +87,7 @@ class RightColumnInformations:
         self._info_labels['virus_name'].setText(f"Virus name: {virus.name}")
         self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {virus.propagation}")
         self._info_labels['virus_resistance'].setText(f"Virus Infection Duration factor: {virus.infection_duration}")
-        self._info_labels['virus_mortality'].setText(f"Virus Mortality factor: {virus.mortality_rate}")
+        self._info_labels['virus_mortality'].setText(f"Virus Mortality factor: {virus.mortality_symptoms}")
 
         selected_city = data.cities[data.selected_city]
         # Update city-specific information.

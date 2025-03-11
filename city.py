@@ -1,6 +1,6 @@
-from random import randint
 from modele_propagation import SIRD_model
 import numpy as np
+from numpy.random import randint
 from math import sqrt
 from numpy import tanh as th
 

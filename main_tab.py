@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton
 from PyQt5.QtCore import Qt
 from gamedata import GameData
 from visuals import GameMap, RightColumnInformations, BottomRowInformations
+from history import GameHistory
 
 
 
@@ -106,7 +107,6 @@ class MainTab(QWidget):
         """
         self._data.selected_city = index
         self._data.first_city_choice()
-        #self.right_info_view.update_labels(self._data)
         self.update_all_views()
 
     def _click_symptom(self, symptom_key):
