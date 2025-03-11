@@ -20,7 +20,8 @@ class Graphs():
         while nrows * ncols < n:
             nrows += 1
 
-        ax = self.figure.subplots(nrows, ncols)
+        ax = self.figure.subplots(nrows, ncols, squeeze=False)
+        
         for k in range(n):
             town = visible_cities[k]
             row, col = k // ncols, k % ncols
