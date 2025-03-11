@@ -118,12 +118,12 @@ class MainTab(QWidget):
         """
         Increments the turn number and updates the game state.
         """
-        if self.game_instance:
-            self.game_instance.update()
         if self._data.turn > self._data.maxturns:
             return
         self._data.click_turn()
         self.update_all_views()
         for town in self._data.cities:
             self.map.update_city_status(town)
+        if self.game_instance:
+            self.game_instance.update()
         
