@@ -1,6 +1,7 @@
 from parser import get_list_from_file
 from virus import Virus
 from city import global_propagation
+from city import City
 import random 
 
 class GameData():
@@ -33,6 +34,7 @@ class GameData():
 
         for i in range (self.ncities):
             town = self.cities[i]
+            town.update_params(self.virus)
             town.propagation_tick(self.virus, nb_ticks=100,timeupdate=(self.turn!=1))
 
         if self.turn < self.maxturns:
