@@ -3,9 +3,11 @@
 -- caracteristiques differentes (param differentes) pour chaques villes -> ajouter param dans classe ville (on pourra)
 -- remetre un bouton mutation, avec des surprises ? genre ca augmente la resistance (mais coute cher) 
 quand les gens guerissent trop vite, et parfois ca fait un truc aleatoire pour ou contre nous
-- commencer graphes villes que quand elles sont contaminées ?
+
 
 FAIT
+- Choisir la ville de départ du virus
+-Commencer graphes villes que quand elles sont contaminées
 -Automatisation update plot
 -Restructurer la classe virus+symptômes
 -Intéraction entre les villes

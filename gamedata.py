@@ -6,6 +6,7 @@ import random
 class GameData():
     def __init__(self, filename, maxturns):
         self.cities = get_list_from_file(filename + "/cities.py", "list_cities")
+        self.start_city = None
         self.ncities = len(self.cities)
         self.virus = Virus("SuperVirus")
         self.resize = 0
@@ -16,12 +17,14 @@ class GameData():
         self.selected_city = 0
         self.messages_err = [[""] for _ in range(self.maxturns+1)]
         self.messages_evt = [[""] for _ in range(self.maxturns+1)]
-        self.messages_err[0].append("Game starts now.")
+        self.messages_err[0].append("Game starts now. Click on the City you want to start your virus in.")
         self.messages_evt[0].append("You will be warned of unexpected events here.")
         self.vaccination_time = random.randint(5,18)
         self.vaccination_prop = 0.2
 
     def click_turn(self):
+        if self.start_city is None:
+            return
         self.turn += 1
         vaccine_msg = self.vaccine()
         propag_msg = global_propagation(self.cities) 
@@ -49,6 +52,13 @@ class GameData():
             else:
                 self.messages_err[self.turn].append(f"Not enough points available to upgrade the symptom {self.virus.symptoms[index].name}. Points required : {self.virus.symptoms[index].mutation_cost}")
             return
+    
+    def first_city_choice(self):
+        if self.start_city is None:
+            self.start_city = self.cities[self.selected_city]
+            self.start_city.infect()
+            self.messages_err.append(f"You have selected {self.start_city.name} to start your virus.")
+        return
 
     def vaccine(self):
         if self.turn == self.vaccination_time:
