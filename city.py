@@ -33,7 +33,7 @@ class City:
         self.mortal_fac = mortality_factor
 
         # Parameters of the city 
-        self.healing_rate = 0 # SIRD Model coeff
+        self.healing_rate =  # SIRD Model coeff
         self.propagation_rate = 0
         self.mortality_rate = 0
 
@@ -74,7 +74,7 @@ class City:
         return max(1,int(((self.x-town.x)**2+(self.y-town.y)**2)**(1/2)))
 
     def is_infected(self):
-        """
+        """  
         returns a bool that tells us if someone has the virus in the city
         """
         return self.infected[-1]>0

@@ -34,6 +34,7 @@ class GameData():
 
         for i in range (self.ncities):
             town = self.cities[i]
+            town.update_params(self)
             town.propagation_tick(nb_ticks=100,timeupdate=(self.turn!=1))
 
         if self.turn < self.maxturns:
