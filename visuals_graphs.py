@@ -36,6 +36,10 @@ class Graphs:
             ax[row][col].plot(town.infected, label='infected')
             ax[row][col].plot(town.recovered, label='recovered')
             ax[row][col].plot(town.dead, label='dead')
+
+            #### marche pas encore if town.first_infection_turn is not None:
+                #### ax[row][col].plot(town.first_infection_turn, 0, 'ro', markersize=20, label='First infection')
+             
             ax[row][col].legend()
             ax[row][col].set_title(town.name)
             ax[row][col].grid()

@@ -1,9 +1,10 @@
 -- Débloquer les symptomes
 - Historique actions
--- caracteristiques differentes (param differentes) pour chaques villes -> ajouter param dans classe ville (on pourra)
+
 -- remetre un bouton mutation, avec des surprises ? genre ca augmente la resistance (mais coute cher) 
 quand les gens guerissent trop vite, et parfois ca fait un truc aleatoire pour ou contre nous
 - proportion de gens avccines depend aussi de la ville
+- ajouter un trait qui amrque le debut de la contamination sur graphiuqe
 
 
 FAIT
@@ -24,3 +25,4 @@ FAIT
 -Rediger le Readme
 -- ajuster les pas de temps entre prop spatial et prop temporelle
 -- ajouter evenements aleatoires (genre un pour commencer)
+-- caracteristiques differentes (param differentes) pour chaques villes -> ajouter param dans classe ville (on pourra)

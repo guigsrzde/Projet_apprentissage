@@ -20,15 +20,15 @@ class GameData():
         self.messages_evt = [[""] for _ in range(self.maxturns+1)]
         self.messages_err[0].append("Game starts now. Click on the City you want to start your virus in.")
         self.messages_evt[0].append("You will be warned of unexpected events here.")
-        self.vaccination_time = random.randint(5,18)
-        self.vaccination_prop = 0.2
+        self.vaccination_time = random.randint(8,18)
+        
 
     def click_turn(self):
         if self.start_city is None:
             return
         self.turn += 1
         vaccine_msg = self.vaccine()
-        propag_msg = global_propagation(self.cities) 
+        propag_msg = global_propagation(self.cities, self.turn) 
         self.virus.mutation_points += 2
         
 
@@ -60,14 +60,14 @@ class GameData():
     def first_city_choice(self):
         if self.start_city is None:
             self.start_city = self.cities[self.selected_city]
-            self.start_city.infect()
+            self.start_city.infect(self.turn)
             self.messages_err.append(f"You have selected {self.start_city.name} to start your virus.")
         return
 
     def vaccine(self):
         if self.turn == self.vaccination_time:
             for town in self.cities:
-                prop_vaccinated = min(self.vaccination_prop, town.healthy[-1])
+                prop_vaccinated = min(town.vaccination_prop, town.healthy[-1])
                 town.recovered[-1] += prop_vaccinated
                 town.healthy[-1] -= prop_vaccinated
             message = f"The UK has developped a vaccine !"

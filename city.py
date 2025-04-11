@@ -12,13 +12,14 @@ dt = 0.1  # Time step
 N = int(T / dt)
 
 class City:
-    def __init__(self, population, coord_x, coord_y, name, id, healing_factor, propagation_factor, mortality_factor, infected=False):
+    def __init__(self, population, coord_x, coord_y, name, id, healing_factor, propagation_factor, mortality_factor, vaccination_prop, infected=False):
         """
         Initialises a city and fills its parameters.
         """
         self.coord_x = coord_x
         self.coord_y = coord_y
         self.pop = population
+
         a = []
         if infected : a = [1/self.pop] 
         else:  a = [0]
@@ -27,6 +28,7 @@ class City:
         self.dead = [0]
         self.recovered = [0]
 
+        self.first_infection_turn = None
         # Factors to compute the parameters
         self.healing_fac = healing_factor
         self.prop_fac = propagation_factor
@@ -36,6 +38,8 @@ class City:
         self.healing_rate = 0 # SIRD Model coeff
         self.propagation_rate = 0
         self.mortality_rate = 0
+
+        self.vaccination_prop = vaccination_prop
 
         self.x = coord_x
         self.y = coord_y
@@ -79,22 +83,24 @@ class City:
         """
         return self.infected[-1]>0
     
-    def infect(self):
+    def infect(self, turn):
         """
         infects a citizen of a city if the city has not yet been infected
         """
+        if self.first_infection_turn is None and self.is_infected():
+            self.first_infection_turn = turn
         if self.is_infected()==False:
             self.infected[-1] = 1/self.pop
             self.healthy[-1] = 1 - (self.infected[-1] + self.recovered[-1] + self.dead[-1])
         return
     
-    def propagate_to(self, town):
+    def propagate_to(self, town, turn):
         """
         model of propagation to new cities.
         """
         p = randint(0,self.pop)
         if p<= 100*self.infected[-1]*self.pop/self.distance(town) and (not town.is_infected()):
-            town.infect()
+            town.infect(turn)
             return True
         return False
     
@@ -133,7 +139,7 @@ class City:
         return
 
 
-def global_propagation(list_cities, nbticks=10):
+def global_propagation(list_cities, turn, nbticks=10):
     """
     Function that allows the virus to propagate between cities
     """
@@ -141,7 +147,7 @@ def global_propagation(list_cities, nbticks=10):
     for _ in range(nbticks):
         for town1 in list_cities:
             for town2 in list_cities:
-                if(town1.propagate_to(town2)):
+                if(town1.propagate_to(town2, turn)):
                     newly_infected_cities_id.append(town2.id)
     message = f"The virus has arrived to these cities: {[str(list_cities[i].name) for i in newly_infected_cities_id]}"
     return message
