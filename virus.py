@@ -57,6 +57,7 @@ class Virus:
         """
         Updates the constants for the SIRD model we used
         """
+        ####print("[DEBUG] Virus:", self.show_stats())
         self.propagation = sum([self.symptoms[name].propagation_impact for name in self.symptoms.keys()])
         self.length_infection = self.infection_duration + sum([self.symptoms[name].duration_impact for name in self.symptoms.keys()])
         self.mortality_symptoms = sum([self.symptoms[name].mortality_impact for name in self.symptoms.keys()])

@@ -33,7 +33,7 @@ class City:
         self.mortal_fac = mortality_factor
 
         # Parameters of the city 
-        self.healing_rate =  # SIRD Model coeff
+        self.healing_rate = 0 # SIRD Model coeff
         self.propagation_rate = 0
         self.mortality_rate = 0
 
@@ -112,6 +112,8 @@ class City:
         """
         Implements one time tick of propagation in our model with Euler's method
         """
+        ####print(f"[DEBUG] {self.name} tick: healthy={self.healthy[-1]:.2f}, infected={self.infected[-1]:.2f}, rate={self.propagation_rate}")
+
         newdt = dt/self.disease_inertia
         for _ in range(nb_ticks):
             h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, self.healing_rate, self.propagation_rate, self.mortality_rate, dt = newdt)
@@ -124,7 +126,8 @@ class City:
         """
         Updates the constants for the SIRD model we used
         """
-        self.transmission_rate = self.prop_fac*th((virus.propagation)/10)
+        ####print(f"[DEBUG] {self.name} reçoit propagation={virus.propagation}, mortality={virus.mortality_symptoms}")
+        self.propagation_rate = self.prop_fac*th((virus.propagation)/10)
         self.healing_rate = 1/(self.healing_fac*th((virus.length_infection)/10))
         self.mortality_rate = self.mortal_fac*th(virus.mortality_symptoms/10)
         return

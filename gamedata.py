@@ -34,7 +34,7 @@ class GameData():
 
         for i in range (self.ncities):
             town = self.cities[i]
-            town.update_params(self)
+            town.update_params(self.virus)
             town.propagation_tick(nb_ticks=100,timeupdate=(self.turn!=1))
 
         if self.turn < self.maxturns:
@@ -42,7 +42,7 @@ class GameData():
             self.messages_evt[self.turn].append(vaccine_msg)
 
         if self.turn == self.maxturns:
-            self.messages_err[-1].append("This is your last turn! Clicking next turn will end the game and close the app")
+            self.messages_err[self.turn].append("This is your last turn! Clicking next turn will end the game and close the app")
     
         return
     
