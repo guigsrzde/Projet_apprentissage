@@ -29,5 +29,5 @@ class GameHistory:
     
     def export_file(self):
         self.add_arrays()
-        data = pd.DataFrame([self.values, self.turn_actions])
-        data.to_csv(f'data_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx', index=False)
+        data = pd.DataFrame(self.values)
+        data.to_csv(f'data_{datetime.now().strftime("%Y%m%d_%H%M%S")}', index=False, encoding='utf-8')
