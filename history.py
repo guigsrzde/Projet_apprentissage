@@ -3,11 +3,11 @@ from datetime import datetime
 from gamedata import GameData
 
 def action(symptom_key):
-    return f"clicl symptom {symptom_key}"
+    return f"click symptom {symptom_key}"
 
 class GameHistory:
     def __init__(self, nb_turns, allgamedata:GameData):
-        self.turn_actions = {i:[] for i in range(nb_turns)}
+        self.turn_actions = {i:[] for i in range(nb_turns+1)}
         self.alldata = allgamedata
 
     def add_action(self, turn_nb, symptom_key):
@@ -15,15 +15,18 @@ class GameHistory:
     
     def add_arrays(self):
         arrays = []
+        mult_factor = len(self.alldata.cities[0].infected)//self.alldata.maxturns
         for i in range(self.alldata.ncities):
-            for time in range(len(self.alldata.cities[0].infected)):
+            for time in range(self.alldata.maxturns):
+                adjusted_time = time * mult_factor
                 arrays.append({
                     "City id": self.alldata.cities[i].id,
-                    "time": time,
-                    "Infected": self.alldata.cities[i].infected,
-                    "Healthy": self.alldata.cities[i].healthy,
-                    "Dead": self.alldata.cities[i].dead,
-                    "Recovered": self.alldata.cities[i].recovered
+                    "turn": time,
+                    "Infected": self.alldata.cities[i].infected[adjusted_time],
+                    "Healthy": self.alldata.cities[i].healthy[adjusted_time],
+                    "Dead": self.alldata.cities[i].dead[adjusted_time],
+                    "Recovered": self.alldata.cities[i].recovered[adjusted_time],
+                    "Actions": self.turn_actions[time]
                 })
         self.values = arrays
     
