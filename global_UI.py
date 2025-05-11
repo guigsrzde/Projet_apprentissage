@@ -30,7 +30,6 @@ class Game(QMainWindow):
         self.tab2.update_plot()
         if self._data.turn == self._data.maxturns:
             self._history.export_file()
-            self.close()
         return
 
 
