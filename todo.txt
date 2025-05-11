@@ -1,5 +1,4 @@
 -- Débloquer les symptomes
-- Historique actions
 
 -- remetre un bouton mutation, avec des surprises ? genre ca augmente la resistance (mais coute cher) 
 quand les gens guerissent trop vite, et parfois ca fait un truc aleatoire pour ou contre nous
@@ -8,6 +7,7 @@ quand les gens guerissent trop vite, et parfois ca fait un truc aleatoire pour o
 
 
 FAIT
+- Historique actions
 - Choisir la ville de départ du virus
 -Commencer graphes villes que quand elles sont contaminées
 -Automatisation update plot
