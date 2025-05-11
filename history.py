@@ -1,18 +1,33 @@
 import pandas as pd
 from datetime import datetime
+from gamedata import GameData
 
-ACTIONS = {"S1":"Click symptom 1", "S2":"Click Symtom 2", "S3":"Click Symtom 3", "S4":"Click Symtom 4"}
+def action(symptom_key):
+    return f"clicl symptom {symptom_key}"
 
 class GameHistory:
-    def __init__(self, nb_turns):
-        self.turn_actions = {i:None for i in range(nb_turns)}
+    def __init__(self, nb_turns, allgamedata:GameData):
+        self.turn_actions = {i:[] for i in range(nb_turns)}
+        self.alldata = allgamedata
 
-    def add_action(self, turn_nb, symptom_number):
-        if (self.turn_actions[turn_nb] is not None):
-            self.turn_actions[turn_nb].append(ACTIONS[f"S{symptom_number}"])
-        else:
-            self.turn_actions[turn_nb] = ACTIONS[f"S{symptom_number}"]
+    def add_action(self, turn_nb, symptom_key):
+        self.turn_actions[turn_nb].append(action(symptom_key))
+    
+    def add_arrays(self):
+        arrays = []
+        for i in range(self.alldata.ncities):
+            for time in range(len(self.alldata.cities[0].infected)):
+                arrays.append({
+                    "City id": self.alldata.cities[i].id,
+                    "time": time,
+                    "Infected": self.alldata.cities[i].infected,
+                    "Healthy": self.alldata.cities[i].healthy,
+                    "Dead": self.alldata.cities[i].dead,
+                    "Recovered": self.alldata.cities[i].recovered
+                })
+        self.values = arrays
     
     def export_file(self):
-        data = pd.DataFrame(self.nb_turns)
-        data.to_excel(f'data_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx', index=False)
+        self.add_arrays()
+        data = pd.DataFrame([self.values, self.turn_actions])
+        data.to_csv(f'data_{datetime.now().strftime("%Y%m%d_%H%M%S")}.xlsx', index=False)
