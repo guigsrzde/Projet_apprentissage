@@ -6,7 +6,7 @@ from gamedata import GameData
 from history import GameHistory
 
 class Game(QMainWindow): 
-    def __init__(self, filename = "royaume_uni", maxturns = 20):
+    def __init__(self, filename = "royaume_uni", maxturns = 19):
         """
         Constructor that instantly launches the game when called.
         """
@@ -30,8 +30,8 @@ class Game(QMainWindow):
         self.tab2.update_plot()
         if self._data.turn == self._data.maxturns:
             self._history.export_file()
-        if self._data.turn == self._data.maxturns+1:
-            self.close()
+        #if self._data.turn == self._data.maxturns+1:
+            #self.close()
         return
     
 
