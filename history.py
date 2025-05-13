@@ -3,7 +3,7 @@ from datetime import datetime
 from gamedata import GameData
 
 def action(symptom_key):
-    return f"click symptom {symptom_key}"
+    return f"{symptom_key}"
 
 class GameHistory:
     def __init__(self, nb_turns, allgamedata:GameData):
