@@ -16,7 +16,7 @@ class NoSkill:
         return
 
     def predict_action(self, state:GameData):
-        while state.virus.mutation_points >= list(state.virus.symptoms.keys())[0].mutation_cost:
+        if state.virus.mutation_points >= list(state.virus.symptoms.keys())[0].mutation_cost:
             return action(list(state.virus.symptoms.keys())[0])  #list(state.virus.symptoms.keys())[0] corresponds to the name of the symptom
         else:
             return None
@@ -29,4 +29,5 @@ try:
     cerveau_basique
 except NameError:
     cerveau_basique = Brain(NoSkill())
+
 
