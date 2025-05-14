@@ -2,16 +2,14 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton
 from PyQt5.QtCore import Qt
 from gamedata import GameData
 from visuals import GameMap, RightColumnInformations, BottomRowInformations
-from history import GameHistory
 
 
 
 class MainTab(QWidget):
-    def __init__(self, filename: str, complete_data: GameData, game_instance, history:GameHistory):
+    def __init__(self, filename: str, complete_data: GameData, game_instance):
         super().__init__()
         self._game_map = filename
         self._data = complete_data
-        self._history = history
 
         # Views
         self.map = GameMap(filename, self)
@@ -116,7 +114,6 @@ class MainTab(QWidget):
         Handles symptom upgrades and updates the UI.
         """
         self._data.click_symptom(symptom_key)
-        self._history.add_action(self._data.turn, symptom_key)
         self.update_all_views()
 
     def _click_time(self):

@@ -1,5 +1,6 @@
 from gamedata import GameData
 from history import action
+import pickle
 
 class Brain:
     def __init__(self, model):
@@ -23,11 +24,5 @@ class NoSkill:
     def update(self, state, action, reward):
         return None
 
-
-
-try:
-    cerveau_basique
-except NameError:
-    cerveau_basique = Brain(NoSkill())
 
 

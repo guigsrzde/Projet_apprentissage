@@ -3,6 +3,7 @@ from virus import Virus
 from city import global_propagation
 from city import City
 import random 
+from history import GameHistory
 
 class GameData():
     def __init__(self, filename, maxturns):
@@ -21,6 +22,7 @@ class GameData():
         self.messages_err[0].append("Game starts now. Click on the City you want to start your virus in.")
         self.messages_evt[0].append("You will be warned of unexpected events here.")
         self.vaccination_time = random.randint(8,18)
+        self.history = GameHistory(maxturns)
         
 
     def click_turn(self):
@@ -42,12 +44,14 @@ class GameData():
             self.messages_evt[self.turn].append(vaccine_msg)
 
         if self.turn == self.maxturns:
+            self.history.export_file(self.cities)
             self.messages_err[self.turn].append("This is your last turn! Clicking next turn will end the game and close the app")
     
         return
     
     def click_symptom(self, index):
             if self.virus.mutation_points >= self.virus.symptoms[index].mutation_cost:
+                self.history.add_action(self.turn, index)
                 self.virus.upgrade_symptom(index)
                 self.virus.propagation += self.virus.symptoms[index].propagation_impact
                 self.virus.infection_duration += self.virus.symptoms[index].duration_impact
