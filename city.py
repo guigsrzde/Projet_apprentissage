@@ -92,17 +92,16 @@ class City:
             self.healthy[-1] = 1 - (self.infected[-1] + self.recovered[-1] + self.dead[-1])
         return
     
-    def propagate_to(self, town, turn):
+    def propagate_to(self, town, turn=0):
         """
         model of propagation to new cities.
         """
-        p = randint(0,self.pop)
-        if p<= 100*self.infected[-1]*self.pop/self.distance(town) and (not town.is_infected()):
-            town.infect(turn)
-            return True
-        return False
+        if self.distance(town) != 0:
+            return (170/self.distance(town))**2 * self.infected[-1]  #170 is the avg distance between 2 points on the pixmap
+        return 0
     
     def update_inertia(self, time1=0, time2=0):
+
         """
         computes the inertia of the virus between two instants of the game
         """
@@ -142,10 +141,15 @@ def global_propagation(list_cities, turn, nbticks=10):
     Function that allows the virus to propagate between cities
     """
     newly_infected_cities_id = []
-    for _ in range(nbticks):
-        for town1 in list_cities:
-            for town2 in list_cities:
-                if(town1.propagate_to(town2, turn)):
-                    newly_infected_cities_id.append(town2.id)
-    message = f"The virus has arrived to these cities: {[str(list_cities[i].name) for i in newly_infected_cities_id]}"
+    M = np.array([[town1.propagate_to(town2) for town2 in list_cities] for town1 in list_cities])
+    prop_values = M.sum(axis=0)
+    randval = np.random.rand(len(list_cities))
+    for i in range(len(list_cities)):
+        if randval[i] < prop_values[i] and (not list_cities[i].is_infected()):
+            list_cities[i].infect(turn)
+            newly_infected_cities_id.append(list_cities[i].id)
+    if len(newly_infected_cities_id) != 0:
+        message = f"The virus has arrived to these cities: {[str(list_cities[i].name) for i in newly_infected_cities_id]}"
+    else:
+        message = f"Currently, {len([town for town in list_cities if town.is_infected()])}/{len(list_cities)} cities have been infected with your virus."
     return message

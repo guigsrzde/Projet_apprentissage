@@ -28,19 +28,22 @@ class Graphs:
             nrows += 1
 
         ax = self.figure.subplots(nrows, ncols, squeeze=False)
+        self.figure.subplots_adjust(hspace=0.4, wspace=0.3)
 
         for k in range(n):
             town = visible_cities[k]
             row, col = k // ncols, k % ncols
-            ax[row][col].plot(town.healthy, label='healthy')
-            ax[row][col].plot(town.infected, label='infected')
-            ax[row][col].plot(town.recovered, label='recovered')
-            ax[row][col].plot(town.dead, label='dead')
-
-            #### marche pas encore if town.first_infection_turn is not None:
-                #### ax[row][col].plot(town.first_infection_turn, 0, 'ro', markersize=20, label='First infection')
-             
-            ax[row][col].legend()
+            if k==0:
+                ax[row][col].plot(town.healthy, label='healthy')
+                ax[row][col].plot(town.infected, label='infected')
+                ax[row][col].plot(town.recovered, label='recovered')
+                ax[row][col].plot(town.dead, label='dead')
+                ax[row][col].legend()
+            else:
+                ax[row][col].plot(town.healthy)
+                ax[row][col].plot(town.infected)
+                ax[row][col].plot(town.recovered)
+                ax[row][col].plot(town.dead)
             ax[row][col].set_title(town.name)
             ax[row][col].grid()
 
