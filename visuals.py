@@ -26,26 +26,38 @@ class GameMap():
         :param city: A city object with coordinates and infection state.
         """
         painter = QPainter(self.pixmap)
-        x, y = city.coord_x, city.coord_y
+        x, y = city.x, city.y
         if city.is_infected() and ((int(city.infected[-1]) * 100 / city.pop) > 0.0):
             color = QColor("red")
         elif not city.is_infected():
             color = QColor("green")
         elif city.is_infected() and ((int(city.infected[-1]) * 100 / city.pop) == 0.0):
             color = QColor("red")        
+
+        radius = 10
+
+        # First, draw a filled black circle
+        painter.setBrush(QColor("black"))
+        painter.setPen(Qt.NoPen)
+        painter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius)
+
+        # Then draw the colored outline on top
+        painter.setBrush(Qt.NoBrush)
         pen = QPen(color, 5, Qt.SolidLine)
         painter.setPen(pen)
-        radius = 10
         painter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius)
+
         self.image_label.setPixmap(self.pixmap)
         self.image_label.update()
         painter.end()
+
+
 
 class RightColumnInformations:
     def __init__(self, complete_data: GameData):
         self._info_labels = {}
         layout = QVBoxLayout()
-        town = complete_data.cities[complete_data.selected_city]
+        town = complete_data.cities[0]
 
         # Create labels and store references
         self._info_labels['upgrade_points'] = QLabel(f"Points available to upgrade virus: {complete_data.virus.mutation_points}")

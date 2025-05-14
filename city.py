@@ -16,8 +16,6 @@ class City:
         """
         Initialises a city and fills its parameters.
         """
-        self.coord_x = coord_x
-        self.coord_y = coord_y
         self.pop = population
 
         a = []
@@ -59,7 +57,7 @@ class City:
         for i in range(randint(2,8)):
             name += chr(ord('a') + randint(0,25))
         population = randint(50000, 1000000)
-        return cls(population, x, y, name, id)
+        return cls(population, x, y, name, id, randint(50,70), randint(40,60)/100, randint(10,30)/100, randint(40,70)/100)
     
     def add_values(self, new_recovered, new_healthy, new_infected):
         """
