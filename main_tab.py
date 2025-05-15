@@ -125,7 +125,7 @@ class MainTab(QWidget):
         self._data.click_turn()
         self.update_all_views()
         for town in self._data.cities:
-            self.map.update_city_status(town)
+            self.map.update_city_status(town, self._data.selected_city)
         if self.game_instance:
             self.game_instance.update()
         
