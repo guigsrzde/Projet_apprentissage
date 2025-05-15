@@ -5,7 +5,7 @@ from graph_tab import GraphTab
 from gamedata import GameData
 
 class Game(QMainWindow): 
-    def __init__(self, filename = "royaume_uni", maxturns = 19):
+    def __init__(self, filename = "royaume_uni", maxturns = 20):
         """
         Constructor that instantly launches the game when called.
         """
