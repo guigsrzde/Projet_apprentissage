@@ -96,7 +96,7 @@ class MainTab(QWidget):
         Update all views based on the current state of the game data.
         """
         for city_name in self._data.cities:
-            self.map.update_city_status(city_name)
+            self.map.update_city_status(city_name, self._data.selected_city)
         self.right_info_view.update_labels(self._data)
         self.bottom_info_view.update_labels(self._data)
         

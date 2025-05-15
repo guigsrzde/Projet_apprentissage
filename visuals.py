@@ -11,6 +11,7 @@ class GameMap():
         self.image_label.setScaledContents(True)
         self.pixmap = QPixmap(filename + "/map.png")
         self.image_label.setPixmap(self.pixmap)
+        self.image_label.setScaledContents(True)
         self.layout.addWidget(self.image_label)
         container = QWidget()
         container.setLayout(self.layout)
@@ -19,8 +20,18 @@ class GameMap():
 
         self._imheight = self.pixmap.size().height()
         self._imwidth = self.pixmap.size().width()
+    
+    def mousePressEvent(self, event):
+        """detects clicks on the pixmap"""
+        if event.button() == Qt.LeftButton:
+            x = event.pos().x()
+            y = event.pos().y()
 
-    def update_city_status(self, city):
+            print(f"Clicked at ({x}, {y})")
+        super().mousePressEvent(event)
+        return
+
+    def update_city_status(self, city, id_selected):
         """
         Draws a visual marker on the map to indicate the city's infection status.
         :param city: A city object with coordinates and infection state.
@@ -37,7 +48,10 @@ class GameMap():
         radius = 10
 
         # First, draw a filled black circle
-        painter.setBrush(QColor("black"))
+        if city.id == id_selected:
+            painter.setBrush(QColor("white"))
+        else:
+            painter.setBrush(QColor("black"))
         painter.setPen(Qt.NoPen)
         painter.drawEllipse(x - radius, y - radius, 2 * radius, 2 * radius)
 
