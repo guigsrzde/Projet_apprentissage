@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from gamedata import GameData
 
 class GameMap():
     def __init__(self, filename, parent_widget):
         self.layout = QVBoxLayout()
-        self.image_label = QLabel(parent_widget)
+        self.image_label = ClickableLabel(parent_widget)
         self.image_label.setAlignment(Qt.AlignCenter)
         self.image_label.setScaledContents(True)
         self.pixmap = QPixmap(filename + "/map.png")
@@ -20,16 +20,6 @@ class GameMap():
 
         self._imheight = self.pixmap.size().height()
         self._imwidth = self.pixmap.size().width()
-    
-    def mousePressEvent(self, event):
-        """detects clicks on the pixmap"""
-        if event.button() == Qt.LeftButton:
-            x = event.pos().x()
-            y = event.pos().y()
-
-            print(f"Clicked at ({x}, {y})")
-        super().mousePressEvent(event)
-        return
 
     def update_city_status(self, city, id_selected):
         """
@@ -145,3 +135,15 @@ class BottomRowInformations:
         if data.turn < data.maxturns + 1:
             self._error_label.setText(data.messages_err[data.turn][-1])
             self._unexpected_event_label.setText(data.messages_evt[data.turn][-1])
+
+class ClickableLabel(QLabel):
+    clicked = pyqtSignal(int,int)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+    
+    def mousePressEvent(self, ev):
+        if ev.button() == Qt.LeftButton:
+            x = ev.pos().x()
+            y = ev.pos().y()
+            self.clicked.emit(x,y)

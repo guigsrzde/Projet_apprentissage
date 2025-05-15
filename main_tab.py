@@ -14,6 +14,7 @@ class MainTab(QWidget):
         # Views
         self.map = GameMap(filename, self)
         self.map.image_label.setScaledContents(True)
+        self.map.image_label.clicked.connect(self.handle_map_click)
         # self.map_view.attach_to_label(self.map_view.image_label)
         self.right_info_view = RightColumnInformations(self._data)
         self.bottom_info_view = BottomRowInformations()
@@ -129,3 +130,27 @@ class MainTab(QWidget):
         if self.game_instance:
             self.game_instance.update()
         
+    def handle_map_click(self, x, y):
+        #print(f"Clicked at QLabel coordinates: ({x}, {y})")
+
+        label_size = self.map.image_label.size()
+        scale_x = self.map._imwidth / label_size.width()
+        scale_y = self.map._imheight / label_size.height()
+        px = int(x * scale_x)
+        py = int(y * scale_y)
+        #print(f"Clicked at image (pixmap) coordinates: ({px}, {py})")
+        for i in range(self._data.ncities):
+            if click_on_city(self._data.cities[i], px, py):
+                self._click_city(i)
+                #print(f"clicked on city {self._data.cities[i].name}")
+                return
+        #print("Clicked on no city")
+        return
+
+
+def click_on_city(town, click_x, click_y, radius=10):
+    dx = town.x - click_x
+    dy = town.y - click_y
+    if dx**2 + dy**2 < radius**2:
+        return True
+    return False
