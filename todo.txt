@@ -2,12 +2,19 @@
 
 -- remetre un bouton mutation, avec des surprises ? genre ca augmente la resistance (mais coute cher) 
 quand les gens guerissent trop vite, et parfois ca fait un truc aleatoire pour ou contre nous
-- proportion de gens avccines depend aussi de la ville
-- ajouter un trait qui amrque le debut de la contamination sur graphiuqe
+- proportion de gens vaccines depend aussi de la ville
+- ajouter un trait qui marque le debut de la contamination sur graphique
+- réussir à faire jouer un agent naïf au jeu
+- créer un score et l'afficher en bas à droite
+- commencer à réfléchir à des agents qui fonctionnent à base d'heuristiques pour jouer au jeu
+- réfléchir à comment implémenter plus d'aléatoire dans le jeu (en plus du vaccin et des param des villes)
 
 
 FAIT
-- Historique actions
+- clicker la pixmap
+- prise en main de pickle
+- Historique actions qui fonctionne bien
+- ajout d'une map random avec plus de villes
 - Choisir la ville de départ du virus
 -Commencer graphes villes que quand elles sont contaminées
 -Automatisation update plot
