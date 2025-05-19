@@ -4,6 +4,6 @@ from sys import exit, argv
 
 
 app = QApplication(argv)
-game = Game(filename="random")
+game = Game(filename="royaume_uni")
 game.show()
 exit(app.exec_())
