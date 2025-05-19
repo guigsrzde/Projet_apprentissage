@@ -6,7 +6,7 @@ import random
 from history import GameHistory
 
 class GameData():
-    def __init__(self, filename, maxturns):
+    def __init__(self, filename, maxturns, export=False):
         self.cities = get_list_from_file(filename + "/cities.py", "list_cities")
         self.start_city = None
         self.ncities = len(self.cities)
@@ -22,7 +22,7 @@ class GameData():
         self.messages_err[0].append("Game starts now. Click on the City you want to start your virus in.")
         self.messages_evt[0].append("You will be warned of unexpected events here.")
         self.vaccination_time = random.randint(8,18)
-        self.history = GameHistory(maxturns)
+        self.history = GameHistory(maxturns, export=export)
         self.infected_cities = []
         
 
