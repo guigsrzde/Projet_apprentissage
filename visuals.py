@@ -83,6 +83,7 @@ class RightColumnInformations:
         self._info_labels['city_healthy'] = QLabel(f"Healthy: {int(town.healthy[-1]*town.pop+0.1)} people, {int(10000*town.healthy[-1])/100}%")
         self._info_labels['city_recovered'] = QLabel(f"Recovered: {int(town.recovered[-1]*town.pop+0.1)} people, {int(10000*town.recovered[-1])/100}%")
         self._info_labels['turn_number'] = QLabel(f"Turn number: {complete_data.turn}")
+        self._info_labels['score'] = QLabel(f"Current score : {complete_data.score_function1()}")
         
         # Add labels to layout
         for label in self._info_labels.values():
@@ -120,6 +121,8 @@ class RightColumnInformations:
         self._info_labels['city_recovered'].setText(
             f"Recovered: {int(selected_city.recovered[-1]*selected_city.pop+0.1)} people, {int(10000*selected_city.recovered[-1])/100}%")
         self._info_labels['turn_number'].setText(f"Turn number: {data.turn}")
+        self._info_labels['score'].setText(f"Current score : {data.score_function1()}")
+        
 
 class BottomRowInformations:
     def __init__(self):

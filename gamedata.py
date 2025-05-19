@@ -24,7 +24,6 @@ class GameData():
         self.vaccination_time = random.randint(8,18)
         self.history = GameHistory(maxturns, export=export)
         self.infected_cities = []
-        
 
     def click_turn(self):
         if self.start_city is None:
@@ -81,5 +80,20 @@ class GameData():
             return message
         else:
             return ""
-                
+    
+    def score_function1(self):
+        score = 0
+        max_score = 0
+        n_infected = 0
+        if self.ncities == 0:
+            print("erreur pas de villes")
+            return
+        for i in range(self.ncities):
+            if self.cities[i].is_infected():
+                n_infected +=1
+            score += (2*self.cities[i].dead[-1] + self.cities[i].infected[-1])*self.cities[i].pop
+            max_score += 2*self.cities[i].pop
+        #score *= n_infected/self.ncities
+        return int(score+0.1)
+                    
 
