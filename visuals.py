@@ -104,6 +104,8 @@ class RightColumnInformations:
         self._info_labels['virus_propagation'].setText(f"Virus Propagation factor: {virus.propagation}")
         self._info_labels['virus_resistance'].setText(f"Virus Infection Duration factor: {virus.infection_duration}")
         self._info_labels['virus_mortality'].setText(f"Virus Mortality factor: {virus.mortality_symptoms}")
+        for name in data.virus.symptoms.keys():
+            self._info_labels[f'virus_symptoms_{name}'].setText(f"Virus Symptom {name} factor: {data.virus.symptoms[name].level}")
 
         selected_city = data.cities[data.selected_city]
         # Update city-specific information.

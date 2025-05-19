@@ -17,18 +17,11 @@ def run_game_with_agent(brain, game):
     max_iterations = 1000
 
     while current_turn < max_turns:
-        # Récupérer l'état actuel du jeu
-        ####current_state = game.cities
         
         # Demander à l'agent de choisir des actions
-        chosen_actions = brain.choose_action(game)#current_state)
+        chosen_actions = brain.choose_action(game)
         
-        iteration_count += 1
-        print(f"Itération {iteration_count}, Tour actuel: {current_turn}/{max_turns}")
-        
-        if iteration_count > max_iterations:
-            print("ALERTE: Boucle infinie détectée - arrêt forcé")
-            break
+        print(f"Tour actuel: {current_turn}/{max_turns}")
 
         reward = 0
         if chosen_actions is not None:
@@ -48,6 +41,7 @@ def run_game_with_agent(brain, game):
     print(f"Résultats: " )
     for key, value in get_game_result(game).items():
         print(f"{key}: {round(value)}")
+
         # if isinstance(value, (float)):
         #     print(f"{key}: {value:.4f}")
         # else:
@@ -56,7 +50,7 @@ def run_game_with_agent(brain, game):
 
 def execute_action_in_game(game, actions):
     """Exécute l'action fournie par l'agent dans le jeu."""
-    reward = 0
+    reward = 0 ###############
     
     for symptom in actions.values():
         game.click_symptom(symptom.name)
