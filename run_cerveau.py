@@ -1,4 +1,4 @@
-from cerveau import Brain, NoSkill
+from cerveau import Brain, NoSkill, SimpleHeuristic
 from gamedata import GameData
 from PyQt5.QtWidgets import QApplication
 from sys import argv
@@ -63,19 +63,20 @@ def execute_action_in_game(game, actions):
 def get_game_result(game):
     """Retourne un résumé des résultats du jeu."""
     total_infected_percentage = 0
-    total_deaths = 0
-    total_recovered = 0
+    world_pop = sum([town.pop for town in game.cities])
     for town in game.cities:
-        total_infected_percentage += town.infected[-1] + town.recovered[-1] - town.vaccination_prop * town.healthy[game.vaccination_time]
-        total_deaths += town.dead[-1]*town.pop
-        total_recovered += town.recovered[-1]*town.pop
+        total_infected_percentage += (1-(town.healthy[-1] + town.vaccination_prop*town.healthy[game.vaccination_time-1]))*town.pop/world_pop
     return {
-        "Total number of people that got contaminated": total_infected_percentage,
-        "Total number of deaths by virus": total_deaths,
+        "World population": world_pop,
+        "Total percentage of people that got contaminated": total_infected_percentage*100,
+        "Total number of deaths by virus": sum([town.dead[-1]*town.pop for town in game.cities]),
+        "Total number of people still infected": sum([town.infected[-1]*town.pop for town in game.cities]),
+        "Total nunmber of people still healthy (neither vaccined nor ever infected)": sum([town.healthy[-1]*town.pop for town in game.cities]),
+        "Total number of recovered people": sum([town.recovered[-1]*town.pop for town in game.cities]),
+        "Total number of people who received the vaccine": sum([town.vaccination_prop*town.healthy[game.vaccination_time-1]*town.pop for town in game.cities]),
         "mutation_points left": game.virus.mutation_points,
-        "Total number of recovered people": total_recovered,
     }
 
-game_instance = GameData("royaume_uni", 20)
-basic_brain = Brain(NoSkill())
+game_instance = GameData("random", 20)
+basic_brain = Brain(SimpleHeuristic())
 run_game_with_agent(basic_brain, game_instance)

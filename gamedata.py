@@ -23,6 +23,7 @@ class GameData():
         self.messages_evt[0].append("You will be warned of unexpected events here.")
         self.vaccination_time = random.randint(8,18)
         self.history = GameHistory(maxturns)
+        self.infected_cities = []
         
 
     def click_turn(self):
@@ -38,6 +39,8 @@ class GameData():
             town = self.cities[i]
             town.update_params(self.virus)
             town.propagation_tick(nb_ticks=100,timeupdate=(self.turn!=1))
+            if town.is_infected() and town not in self.infected_cities:
+                self.infected_cities.append(town)
 
         if self.turn < self.maxturns:
             self.messages_err[self.turn].append(propag_msg)
@@ -71,7 +74,7 @@ class GameData():
     def vaccine(self):
         if self.turn == self.vaccination_time:
             for town in self.cities:
-                prop_vaccinated = min(town.vaccination_prop, town.healthy[-1])
+                prop_vaccinated = town.vaccination_prop*town.healthy[-1] #min(town.vaccination_prop, town.healthy[-1])
                 town.recovered[-1] += prop_vaccinated
                 town.healthy[-1] -= prop_vaccinated
             message = f"The UK has developped a vaccine !"

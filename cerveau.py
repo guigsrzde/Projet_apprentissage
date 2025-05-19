@@ -36,5 +36,39 @@ class NoSkill:
     def update(self, state, action, reward):
         return None
 
+class SimpleHeuristic:
+    def __init__self():
+        return
+    
+    def choose_first_city_idx(self, game):
+        return random.randint(0, game.ncities - 1) if game.cities else 0
+    
+    def predict_action(self, game):
+        symptoms = game.virus.symptoms
+        actions = {}
+        idx = 0
+        if game.ncities > len(game.infected_cities) and game.virus.mutation_points >= symptoms["Cough"].mutation_cost:
+            points = game.virus.mutation_points
+            cost = symptoms["Cough"].mutation_cost
+            while points >= cost:
+                actions[idx] = symptoms["Cough"]
+                idx += 1
+                points -= cost
+
+        elif game.ncities == len(game.infected_cities) and game.virus.mutation_points >= symptoms["Death"].mutation_cost:
+            points = game.virus.mutation_points
+            cost = symptoms["Death"].mutation_cost
+            while points >= cost:
+                actions[idx] = symptoms["Death"]
+                idx += 1
+                points -= cost
+        
+        else :
+            print("not enough points")
+
+        return actions  
+
+    def update(self, state, action, reward):
+        return None
 
 
