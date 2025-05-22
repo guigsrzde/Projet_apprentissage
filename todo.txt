@@ -10,6 +10,11 @@ quand les gens guerissent trop vite, et parfois ca fait un truc aleatoire pour o
 - réfléchir à comment implémenter plus d'aléatoire dans le jeu (en plus du vaccin et des param des villes)
 
 
+- policy learning avec variables C0
+- Discrétisation sur environnement simple
+- Réseau de neurones uniquement si on a le temps
+
+
 FAIT
 - clicker la pixmap
 - prise en main de pickle

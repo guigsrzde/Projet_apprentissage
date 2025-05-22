@@ -5,13 +5,13 @@ from graph_tab import GraphTab
 from gamedata import GameData
 
 class Game(QMainWindow): 
-    def __init__(self, filename = "royaume_uni", maxturns = 20):
+    def __init__(self, filename = "royaume_uni", export=False, maxturns = 20):
         """
         Constructor that instantly launches the game when called.
         """
         super().__init__()
         self.setWindowTitle("Serious Game: Supervirus")
-        self._data = GameData(filename, maxturns)
+        self._data = GameData(filename, maxturns, export=export)
         self.filename = filename
         self._build_ui()
     

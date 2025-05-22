@@ -6,7 +6,7 @@ import random
 from history import GameHistory
 
 class GameData():
-    def __init__(self, filename, maxturns):
+    def __init__(self, filename, maxturns, export=False):
         self.cities = get_list_from_file(filename + "/cities.py", "list_cities")
         self.start_city = None
         self.ncities = len(self.cities)
@@ -22,9 +22,8 @@ class GameData():
         self.messages_err[0].append("Game starts now. Click on the City you want to start your virus in.")
         self.messages_evt[0].append("You will be warned of unexpected events here.")
         self.vaccination_time = random.randint(8,18)
-        self.history = GameHistory(maxturns)
+        self.history = GameHistory(maxturns, export=export)
         self.infected_cities = []
-        
 
     def click_turn(self):
         if self.start_city is None:
@@ -81,5 +80,20 @@ class GameData():
             return message
         else:
             return ""
-                
+    
+    def score_function1(self):
+        score = 0
+        max_score = 0
+        n_infected = 0
+        if self.ncities == 0:
+            print("erreur pas de villes")
+            return
+        for i in range(self.ncities):
+            if self.cities[i].is_infected():
+                n_infected +=1
+            score += (2*self.cities[i].dead[-1] + self.cities[i].infected[-1])*self.cities[i].pop
+            max_score += 2*self.cities[i].pop
+        #score *= n_infected/self.ncities
+        return int(score+0.1)
+                    
 
