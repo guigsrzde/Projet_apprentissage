@@ -37,6 +37,7 @@ class GameData():
         for i in range (self.ncities):
             town = self.cities[i]
             town.update_params(self.virus)
+            town.check_lockdown_status()
             town.propagation_tick(nb_ticks=100,timeupdate=(self.turn!=1))
             if town.is_infected() and town not in self.infected_cities:
                 self.infected_cities.append(town)

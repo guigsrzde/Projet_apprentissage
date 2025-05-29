@@ -51,7 +51,6 @@ class Virus:
             return new_level
         error_msg = "Not enough mutation points to upgrade this symptom"
         return error_msg
-    
 
     def update_values(self):
         """
@@ -77,7 +76,6 @@ class Virus:
         message = f"Virus {self.name}: Propagation={self.propagation}, Infection Duration={self.infection_duration}, Mutation points={self.mutation_points}"
         # print(message)
         return message
-
 
 
 class Symptom:
