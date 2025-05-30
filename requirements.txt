@@ -1,5 +1,6 @@
-PyQt5
+#PyQt5
 matplotlib
 numpy
 pandas
 datetime
+gymnasium
