@@ -50,8 +50,6 @@ class City:
         self.id = id # int
 
         self.disease_inertia = 1 # determines how fast time should go
-
-        print(self.lockdown)
     
     @classmethod
     def random(cls, max_x, max_y, id):
@@ -159,7 +157,7 @@ class City:
         self.propagation_rate = self.prop_fac*th((virus.propagation)/10)
         self.healing_rate = 1/(self.healing_fac*th((virus.length_infection)/10))
         self.mortality_rate = self.mortal_fac*th(virus.mortality_symptoms/10)
-        print(self.lockdown)
+    
         if self.lockdown:
             self.propagation_rate *= (1 - self.lockdown_effectiveness)
 
