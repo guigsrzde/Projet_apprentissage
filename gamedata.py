@@ -24,6 +24,7 @@ class GameData():
         self.vaccination_time = random.randint(8,18)
         self.history = GameHistory(maxturns, export=export)
         self.infected_cities = []
+        self.score = sum([2*city.dead[-1] + city.infected[-1] for city in self.cities])
 
     def click_turn(self):
         if self.start_city is None:
@@ -49,7 +50,7 @@ class GameData():
         if self.turn == self.maxturns:
             self.history.export_file(self.cities)
             self.messages_err[self.turn].append("This is your last turn! Clicking next turn will end the game and close the app")
-    
+        self.score = sum([2*city.dead[-1] + city.infected[-1] for city in self.cities])
         return
     
     def click_symptom(self, index):

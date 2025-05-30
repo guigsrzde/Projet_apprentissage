@@ -30,7 +30,7 @@ class Brain:
     
 
 class NoSkill:
-    def __init__self():
+    def __init__(self):
         return
 
     def choose_first_city_idx(self, game):
@@ -50,7 +50,7 @@ class NoSkill:
         return None
 
 class SimpleHeuristic:
-    def __init__self():
+    def __init__(self):
         return
     
     def choose_first_city_idx(self, game):
