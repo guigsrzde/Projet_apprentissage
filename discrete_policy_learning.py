@@ -38,6 +38,9 @@ class QLearningBrain:
     def choose_action(self, game):
         state = self.get_state(game)
 
+        if state not in self.q_table:
+            action = 0
+
         if rnd.rand() < self.epsilon:
             while True:
                 action = rnd.randint(0,4)

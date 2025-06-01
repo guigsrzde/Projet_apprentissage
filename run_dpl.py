@@ -2,6 +2,7 @@ from gamedata import GameData
 import numpy as np
 from discrete_policy_learning import QLearningBrain
 import matplotlib.pyplot as plt
+import pickle
 
 def smooth_histogram(data, bins=30, kernel_width=3):
     # Histogramme simple
@@ -44,7 +45,6 @@ def plot_results(event_time, score):
         x = indices
         score = np.array(score)
         y = score[indices]
-        print(y)
         means.append(sum(y)/len(y))
 
         axs[i].plot(x, y)
@@ -62,8 +62,8 @@ def plot_results(event_time, score):
 def constant_reward_fn(game:GameData, actions):
     return game.score_function1()  # récompense constante
 
-def train_q_agent(num_episodes=100):
-    brain = None
+def train_q_agent(num_episodes=100, brain=None):
+    brain = brain
     scores = []
     v_times = []
 
@@ -113,22 +113,26 @@ def apply_action(game:GameData, actions):
     else:
         game.click_turn()
 
-def validate_brain(brain):
+def validate_brain(brain, n_iter):
     scores = []
     v_times = []
-    for n in range (100):
+    for n in range (n_iter):
         game = GameData("random", 20)
+        brain.symptom_dict = game.virus.symptoms
+        brain.symptom_list = list(brain.symptom_dict.values())
         run_q_game(brain, game)
-        scores.append(game.score_function1())
+        scores.append(game.score)
         v_times.append(game.vaccination_time)
         if n%10==0:
             print(f"validation game number {n}")
 
-    plot_results(v_times, np.array(scores))
+    plot_results(v_times, scores)
     smooth_histogram(scores)
 
 
 if __name__ == "__main__":
-    brain = train_q_agent(num_episodes=1000)
+    brain = train_q_agent(num_episodes=600)
     brain.epsilon=0
-    validate_brain(brain)
+    validate_brain(brain, 300)
+    with open('brain.pkl', 'wb') as f:
+        pickle.dump(brain, f)
