@@ -35,7 +35,7 @@ def plot_results(event_time, score):
     means=[]
     
     ncols = 4
-    nrows = (n_events + 1) // ncols
+    nrows = max((n_events + 1) // ncols,1)
 
     fig, axs = plt.subplots(nrows, ncols, figsize=(12, 3 * nrows))
     axs = np.array(axs).reshape(-1)  # Flatten in case of single row
@@ -52,7 +52,7 @@ def plot_results(event_time, score):
         if i ==0:
             axs[i].set_ylabel("Score")
     
-    axs[-1].plot(range(5,5+n_events), means, marker='o')
+    axs[-1].plot(range(8,8+n_events), means, marker='o')
     axs[-1].set_title("score moyen en fonction de la vaccination")
     
     
@@ -72,7 +72,7 @@ def train_q_agent(num_episodes=100, brain=None):
         symptom_dict = game.virus.symptoms
 
         if brain is None:
-            brain = QLearningBrain(symptom_dict, reward_fn=constant_reward_fn)
+            brain = QLearningBrain(symptom_dict)
         else:
             brain.symptom_dict = symptom_dict
             brain.symptom_list = list(symptom_dict.values())
@@ -83,9 +83,9 @@ def train_q_agent(num_episodes=100, brain=None):
         if episode%10==0:
             print(f"train game number {episode}")
         #print(f"Épisode {episode+1}/{num_episodes} terminé — epsilon = {brain.epsilon:.4f}")
-    plot_results(v_times, scores)
-    smooth_histogram(scores)
-    print(f"score_mean :{np.mean(scores)}, epsilon = {brain.epsilon}")
+    #plot_results(v_times, scores)
+    #smooth_histogram(scores)
+    #print(f"score_mean :{np.mean(scores)}, epsilon = {brain.epsilon}")
     return brain
     
 def run_q_game(brain, game):
@@ -126,13 +126,16 @@ def validate_brain(brain, n_iter):
         if n%10==0:
             print(f"validation game number {n}")
 
-    plot_results(v_times, scores)
-    smooth_histogram(scores)
+    #plot_results(v_times, scores)
+    #smooth_histogram(scores)
+    return v_times, scores
 
 
 if __name__ == "__main__":
-    brain = train_q_agent(num_episodes=600)
-    brain.epsilon=0
-    validate_brain(brain, 300)
-    with open('brain.pkl', 'wb') as f:
-        pickle.dump(brain, f)
+    data = []
+    for i in range(10):
+        print(f"interation {i}")
+        brain = train_q_agent(num_episodes=100)
+        data.append(brain)
+    with open('brains.pkl', 'wb') as f:
+        pickle.dump(data, f)
