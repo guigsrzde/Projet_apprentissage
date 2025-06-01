@@ -34,6 +34,7 @@ class GameData():
         propag_msg = global_propagation(self.cities, self.turn) 
         self.virus.mutation_points += 2
         
+        
 
         for i in range (self.ncities):
             town = self.cities[i]

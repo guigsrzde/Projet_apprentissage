@@ -104,12 +104,12 @@ class City:
         # Starts a lockdown if the threshold is reached
         if self.infected[-1] >= self.lockdown_threshold and not self.lockdown:
             self.lockdown = True
-            print(f"ALERTE: La ville {self.name} entre en confinement avec {self.infected[-1]*100:.1f}% de population infectée")
+            #print(f"ALERTE: La ville {self.name} entre en confinement avec {self.infected[-1]*100:.1f}% de population infectée")
         
         # Raise the lockdown if the infected level returns under threshold 
         elif self.infected[-1] < self.lockdown_threshold and self.lockdown:
             self.lockdown = False
-            print(f"INFO: La ville {self.name} sort du confinement avec {self.infected[-1]*100:.1f}% de population infectée")
+            #print(f"INFO: La ville {self.name} sort du confinement avec {self.infected[-1]*100:.1f}% de population infectée")
         
         # Enregistrer l'état de confinement
         self.lockdown_history.append(self.lockdown)

@@ -1,8 +1,14 @@
-# qlearning.py
-
 import numpy as np
 import numpy.random as rnd
 from collections import defaultdict
+
+def reachable_state(turn, S, action=0):
+    a=0
+    if action == 0:
+        a=2
+    else:
+        a = -1*S[action-1].mutation_cost
+    return 30+turn*2-S[1].mutation_cost*(S[1].level+1)-S[2].mutation_cost*(S[2].level+1)-S[0].mutation_cost*(S[0].level+1)+a>=0
 
 class QLearningBrain:
     def __init__(self, symptom_dict, reward_fn, alpha=0.1, gamma=0.95, epsilon=1.0, epsilon_decay=0.995):
@@ -26,13 +32,17 @@ class QLearningBrain:
         return (game.turn,) + levels
 
     def choose_first_city_idx(self, game):
-        return rnd.randint(0, game.ncities)
+        #return rnd.randint(0, game.ncities)
+        return 0
 
     def choose_action(self, game):
         state = self.get_state(game)
 
         if rnd.rand() < self.epsilon:
-            action = rnd.choice(self.actions)
+            while True:
+                action = rnd.randint(0,4)
+                if reachable_state(game.turn, self.symptom_list, int(action)):
+                    break
         else:
             action = int(np.argmax(self.q_table[state]))
 
@@ -45,9 +55,11 @@ class QLearningBrain:
             return {action: self.symptom_list[action - 1]}
 
     def learn(self, game, actions):
+        if self.epsilon==0:
+            return
         next_state = self.get_state(game)
         reward = self.reward_fn(game, actions)
-        done = game.turn >= game.maxturns
+        done = game.turn >= game.maxturns-1
 
         current_q = self.q_table[self.prev_state][self.prev_action]
         max_future_q = 0 if done else np.max(self.q_table[next_state])
