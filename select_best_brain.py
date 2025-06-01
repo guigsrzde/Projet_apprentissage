@@ -10,7 +10,7 @@ best_vax = []
 best_scores = []
 for i in range(len(data)):
     print(f"brain number {i+1}")
-    vax, scores = validate_brain(data[i], 20)
+    vax, scores = validate_brain(data[i], 200)
     avg = [0 for _ in range(5,19)]
     n = [0 for _ in range(5,19)]
     for j in range(len(vax)):
@@ -29,5 +29,6 @@ for i in range(len(data)):
         best_brain_avg = avg
 
 plot_results(best_vax, best_scores)
+print(best_brain_id)
 
 

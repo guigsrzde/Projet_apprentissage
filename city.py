@@ -6,7 +6,7 @@ from numpy import tanh as th
 
 # Parameters
 T = 365  # Total time in days
-dt = 0.1  # Time step
+dt = 1  # Time step
 
 # Number of time steps
 N = int(T / dt)
@@ -142,7 +142,7 @@ class City:
         ####print(f"[DEBUG] {self.name} tick: healthy={self.healthy[-1]:.2f}, infected={self.infected[-1]:.2f}, rate={self.propagation_rate}")
 
         newdt = dt/self.disease_inertia
-        for _ in range(nb_ticks):
+        for _ in range(nb_ticks//10):
             h, i, r, d = SIRD_model(self.healthy, self.infected, self.recovered, self.dead, self.healing_rate, self.propagation_rate, self.mortality_rate, dt = newdt)
             self.healthy.append(h), self.infected.append(i), self.recovered.append(r), self.dead.append(d)
             if timeupdate: 
